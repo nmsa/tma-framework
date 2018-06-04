@@ -1,15 +1,15 @@
 [submodule "tma-framework-m"]
 	path = tma-framework-m
-	url = https://github.com/nmsa/tma-framework-m.git
+	url = https://github.com/eubr-atmosphere/tma-framework-m.git
 [submodule "tma-framework-k"]
 	path = tma-framework-k
-	url = ../tma-framework-k.git
+	url = https://github.com/eubr-atmosphere/tma-framework-k.git
 [submodule "tma-framework-p"]
 	path = tma-framework-p
-	url = https://github.com/nmsa/tma-framework-p.git
+	url = https://github.com/eubr-atmosphere/tma-framework-p.git
 [submodule "tma-framework-a"]
 	path = tma-framework-a
-	url = https://github.com/nmsa/tma-framework-a.git
+	url = https://github.com/eubr-atmosphere/tma-framework-a.git
 [submodule "tma-framework-e"]
 	path = tma-framework-e
-	url = https://github.com/nmsa/tma-framework-e.git
+	url = https://github.com/eubr-atmosphere/tma-framework-e.git

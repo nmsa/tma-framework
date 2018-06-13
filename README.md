@@ -22,11 +22,11 @@ Finally, the components of the remaining ecosystem layers provide an interface w
 
 ## TMA Platform Architecture
 
-The platform architecture is presented in the [figure below](architecture/diagrams/TMA-Platform_Detailed_Architecture_Actors.jpg). 
+The platform architecture is presented in the [figure below](architecture/diagrams/TMA-Platform_Detailed_Architecture.jpg). 
 In practice, the platform is a special-purpose [**ATMOSPHERE**](http://www.atmosphere-eubrazil.eu) application, also deployed over the container services layer, and internally designed in a microservices architecture, where each component represents one `MAPE-K` step.
 
 
-*![High level architecture of TMA Framework](architecture/diagrams/TMA-Platform_Detailed_Architecture_Actors.jpg) Architecture and interfaces of the trustworthiness platform.*
+*![High level architecture of TMA Framework](architecture/diagrams/TMA-Platform_Detailed_Architecture.jpg) Architecture and interfaces of the trustworthiness platform.*
 
 
 The [`TMA_Monitor`](#tma_monitor) component follows a passive strategy (push mode) in which the other layers provide trustworthiness-related information through the `ReceiveData` RESTful interface. 
@@ -53,19 +53,19 @@ Finally, the [`TMA_Execute`](#tma_execute) microservice runs the adaptation plan
 More details can be found in the documentation of each of these components.
 
 ### TMA\_Monitor
-[Main repository available here.](https://github.com/nmsa/tma-framework-m)
+[Main repository available here.](https://github.com/eubr-atmosphere/tma-framework-m)
 
 ### TMA\_Analyze
-[Main repository available here.](https://github.com/nmsa/tma-framework-a)
+[Main repository available here.](https://github.com/eubr-atmosphere/tma-framework-a)
 
 ### TMA\_Planning
-[Main repository available here.](https://github.com/nmsa/tma-framework-p)
+[Main repository available here.](https://github.com/eubr-atmosphere/tma-framework-p)
 
 ### TMA\_Execute
-[Main repository available here.](https://github.com/nmsa/tma-framework-e)
+[Main repository available here.](https://github.com/eubr-atmosphere/tma-framework-e)
 
 ### TMA\_Knowledge
-[Main repository available here.](https://github.com/nmsa/tma-framework-k)
+[Main repository available here.](https://github.com/eubr-atmosphere/tma-framework-k)
 
 
 

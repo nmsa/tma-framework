@@ -26,9 +26,12 @@ public class DatabaseManager {
         }
         // Setup the connection with the DB
         try {
-            connection = DriverManager
+            /*connection = DriverManager
                     .getConnection("jdbc:mysql://localhost/knowledge?"
-                            + "user=root&password=123456");
+                            + "user=root&password=123456");*/
+            connection = DriverManager
+                    .getConnection("jdbc:mysql://mysql-0.mysql.default.svc.cluster.local:3306/knowledge?"
+                            + "user=root&password=password");
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
         }

@@ -4,9 +4,9 @@ public class Actuator {
 
     private int actuatorId;
     private String address;
-    private String pubKey;
+    private byte[] pubKey;
 
-    public Actuator(int actuatorId, String address, String pubKey) {
+    public Actuator(int actuatorId, String address, byte[] pubKey) {
         super();
         this.actuatorId = actuatorId;
         this.address = address;
@@ -29,11 +29,11 @@ public class Actuator {
         this.address = address;
     }
 
-    public String getPubKey() {
+    public byte[] getPubKey() {
         return pubKey;
     }
 
-    public void setPubKey(String pubKey) {
+    public void setPubKey(byte[] pubKey) {
         this.pubKey = pubKey;
     }
 

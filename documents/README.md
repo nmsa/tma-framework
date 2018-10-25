@@ -10,7 +10,12 @@ The [`TMA_Analyze`](#tma_analyze) component is responsible for continuously list
 
 The `metricId` indicates that a new value for the corresponding metric was calculated and stored in the database, in the moment stored on `timestamp`.
 
-The [`TMA_Planning`](#tma_planning) microservice is responsible for executing the verification rules that will produce a set of adaptations that will be consolidated in an "adaptation plan" to achieve the required goals, or to recover the desired levels of trustworthiness. This is done by continuously polling the messages from the `planning` queue. If an adaptation is needed, an "adaptation plan" is stored in the database with the set of actions. The communication with [`TMA_Planning`](#tma_planning) is done by the `execute` queue, which will receive a [JSON](interface/atmosphere_tma-e_schema.json) message with the plan identifier.
+The [`TMA_Planning`](#tma_planning) microservice is responsible for executing the verification rules that will produce a set of adaptations that will be consolidated in an "adaptation plan" to achieve the required goals, or to recover the desired levels of trustworthiness. This is done by continuously polling the messages from the `planning` queue. If an adaptation is needed, an "adaptation plan" is stored in the database with the set of actions. 
+
+-- TODO: A
+*![Conceptual Data Model used by the Planning component](../architecture/diagrams/TMA-K_DataModel/TMAF-K_ConceptualDataModel_Planning.jpg) Conceptual Data Model used by the Planning component.*
+
+The communication of [`TMA_Planning`](#tma_planning) is done by the `execute` queue, which will receive a [JSON](interface/atmosphere_tma-e_schema.json) message with the plan identifier.
 
 -- TODO: ADD THE image of the JSON WITH THE PLAN_ID
 

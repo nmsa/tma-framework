@@ -1,0 +1,18 @@
+{
+    "title": "tma-e_schema_0_1",
+    "$id": "http://atmosphere-eubrazil.eu/tma-e_schema_v0.1.json",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+        "planId": {
+            "$id": "/properties/planId",
+            "type": "integer",
+            "default": -1,
+            "minimum": 0
+        }
+    },
+    "required": [
+        "planId"
+    ]
+}
+

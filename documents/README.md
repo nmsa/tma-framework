@@ -6,7 +6,7 @@ The communication between the components from the `MAPE-K` is done mainly by the
 
 The [`TMA_Analyze`](#tma_analyze) component is responsible for continuously listening to the `TMA_Knowledge` microservice, calculate the trustworthiness scores and, store them on the database. An item is added to the `planning` queue from the `FaultTolerantQueue` in order to the [`TMA_Planning`](#tma_planning) starts checking the rules. The format of the message is a [JSON](interface/atmosphere_tma-p_schema.json) according to the image below:
 
-*![JSON Format read by TMA_Planning](../architecture/diagrams/atmosphere_tma-p_schema.png) Format of the JSON message to be read by the TMA_Planning component*
+*![JSON Format read by TMA_Planning](interface/atmosphere_tma-p_schema.png) Format of the JSON message to be read by the TMA_Planning component*
 
 The `metricId` indicates that a new value for the corresponding metric was calculated and stored in the database, in the moment stored on `timestamp`.
 
@@ -18,7 +18,7 @@ An adaptation plan is stored in the `Plan` table, and it is always related to th
 
 The communication of [`TMA_Planning`](#tma_planning) is done by the `execute` queue, which will receive a [JSON](interface/atmosphere_tma-e_schema.json) message with the plan identifier.
 
-*![JSON Format read by TMA_Execute](../architecture/diagrams/atmosphere_tma-e_schema.png) Format of the JSON message to be read by the TMA_Execute component*
+*![JSON Format read by TMA_Execute](interface/atmosphere_tma-e_schema.png) Format of the JSON message to be read by the TMA_Execute component*
 
 Finally, the [`TMA_Execute`](#tma_execute) microservice runs the adaptation plan using the deployed actuators on the target layers. This component is continuously polling the messages from the `execute` queue. When a plan is added, the list of actions is obtained from the [`TMA_Knowledge`](#tma_knowledge), with the order of execution and the parameters values.
 

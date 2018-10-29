@@ -22,6 +22,3 @@ The communication of [`TMA_Planning`](#tma_planning) is done by the `execute` qu
 
 Finally, the [`TMA_Execute`](#tma_execute) microservice runs the adaptation plan using the deployed actuators on the target layers. This component is continuously polling the messages from the `execute` queue. When a plan is added, the list of actions is obtained from the [`TMA_Knowledge`](#tma_knowledge), with the order of execution and the parameters values.
 
-(nmsa: CHECK IF THIS CONTENT SHOULD REPLACE THE SECTION FROM THE MAIN PAGE)
-
-(REVIEW THE LINKS TO THE SUB-MODULES)

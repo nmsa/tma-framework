@@ -2,6 +2,14 @@ package eubr.atmosphere.tma.utils;
 
 public class Score {
 
+    public Score() {
+        super();
+        this.cpuPod = 0.0;
+        this.memoryPod = 0.0;
+        this.cpuNode = 0.0;
+        this.memoryNode = 0.0;
+    }
+
     private Double cpuPod;
     private Double memoryPod;
     private Double cpuNode;

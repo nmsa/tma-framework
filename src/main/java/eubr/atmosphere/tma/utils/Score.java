@@ -15,6 +15,7 @@ public class Score {
     private Double cpuNode;
     private Double memoryNode;
     private Double score;
+    private long timestamp;
 
     public Double getCpuPod() {
         return cpuPod;
@@ -47,16 +48,27 @@ public class Score {
     public void setMemoryNode(Double memoryNode) {
         this.memoryNode = memoryNode;
     }
-    
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
+    }
+
     @Override
     public String toString() {
         return "Score [cpuPod: " + this.getCpuPod() +
               ", memoryPod: " + this.getMemoryPod() +
               ", cpuNode: " + this.getCpuNode() +
-              ", memoryNode: " + this.getMemoryNode() + "]";
+              ", memoryNode: " + this.getMemoryNode() +
+              ", timestamp: " + this.getTimestamp() + "]";
     }
 
     public Double getScore() {
+        if (this.getCpuNode() == 0 || this.getMemoryNode() == 0)
+            return 0.0;
         Double a1 = this.getCpuPod() / this.getCpuNode();
         Double a2 = this.getMemoryPod() / this.getMemoryNode();
         this.score = 0.5 * a1 + 0.5 * a2;

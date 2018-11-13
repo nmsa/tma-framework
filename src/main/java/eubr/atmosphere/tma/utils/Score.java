@@ -71,7 +71,7 @@ public class Score {
             return 0.0;
         Double a1 = this.getCpuPod() / this.getCpuNode();
         Double a2 = this.getMemoryPod() / this.getMemoryNode();
-        this.score = 0.5 * a1 + 0.5 * a2;
+        this.score = 0.65 * a1 + 0.35 * a2;
         return this.score;
     }
 

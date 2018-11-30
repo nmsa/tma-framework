@@ -8,6 +8,7 @@ public class Score {
         this.memoryPod = 0.0;
         this.cpuNode = 0.0;
         this.memoryNode = 0.0;
+        this.podCount = 0;
     }
 
     private Double cpuPod;

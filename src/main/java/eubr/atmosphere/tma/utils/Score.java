@@ -15,6 +15,7 @@ public class Score {
     private Double cpuNode;
     private Double memoryNode;
     private Double score;
+    private Integer podCount;
     private long timestamp;
 
     public Double getCpuPod() {
@@ -57,6 +58,14 @@ public class Score {
         this.timestamp = timestamp;
     }
 
+    public Integer getPodCount() {
+        return podCount;
+    }
+
+    public void setPodCount(Integer podCount) {
+        this.podCount = podCount;
+    }
+
     @Override
     public String toString() {
         return "Score [cpuPod: " + this.getCpuPod() +
@@ -67,11 +76,11 @@ public class Score {
     }
 
     public Double getScore() {
-        if (this.getCpuNode() == 0 || this.getMemoryNode() == 0)
+        if (this.getCpuNode() == 0 || this.getMemoryNode() == 0 || this.getPodCount() == 0)
             return 0.0;
         Double a1 = this.getCpuPod() / this.getCpuNode();
         Double a2 = this.getMemoryPod() / this.getMemoryNode();
-        this.score = 0.65 * a1 + 0.35 * a2;
+        this.score = (0.65 * a1 + 0.35 * a2) / this.getPodCount();
         return this.score;
     }
 

@@ -9,6 +9,8 @@ public class Score {
         this.cpuNode = 0.0;
         this.memoryNode = 0.0;
         this.podCount = 0;
+        this.throughput = 0.0;
+        this.responseTime = 0.0;
     }
 
     private Double cpuPod;
@@ -17,6 +19,8 @@ public class Score {
     private Double memoryNode;
     private Double score;
     private Integer podCount;
+    private Double throughput;
+    private Double responseTime;
     private long timestamp;
 
     public Double getCpuPod() {
@@ -67,12 +71,30 @@ public class Score {
         this.podCount = podCount;
     }
 
+    public Double getThroughput() {
+        return throughput;
+    }
+
+    public void setThroughput(Double throughput) {
+        this.throughput = throughput;
+    }
+
+    public Double getResponseTime() {
+        return responseTime;
+    }
+
+    public void setResponseTime(Double responseTime) {
+        this.responseTime = responseTime;
+    }
+
     @Override
     public String toString() {
         return "Score [cpuPod: " + this.getCpuPod() +
               ", memoryPod: " + this.getMemoryPod() +
               ", cpuNode: " + this.getCpuNode() +
               ", memoryNode: " + this.getMemoryNode() +
+              ", throughput: " + this.getThroughput() +
+              ", responseTime: " + this.getResponseTime() +
               ", timestamp: " + this.getTimestamp() + "]";
     }
 

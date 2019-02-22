@@ -2,6 +2,9 @@ package eubr.atmosphere.tma.utils;
 
 public class Score {
 
+    public static final Double MAX_THROUGHPUT = 100.00;
+    public static final Double MAX_RESPONSE_TIME = 100.00;
+
     public Score() {
         super();
         this.cpuPod = 0.0;
@@ -104,6 +107,13 @@ public class Score {
         Double a1 = this.getCpuPod() / this.getCpuNode();
         Double a2 = this.getMemoryPod() / this.getMemoryNode();
         this.score = (0.65 * a1 + 0.35 * a2) / this.getPodCount();
+
+        Double a5 = this.getThroughput() / MAX_THROUGHPUT;
+        Double a6 = this.getResponseTime() / MAX_RESPONSE_TIME;
+        Double performance = 0.5 * a5 + 0.5 * a6;
+        if (performance > 0.0)
+            this.score = 0.4 * this.score + 0.6 * performance;
+
         return this.score;
     }
 

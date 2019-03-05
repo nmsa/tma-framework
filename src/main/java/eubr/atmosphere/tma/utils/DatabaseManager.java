@@ -31,7 +31,7 @@ public class DatabaseManager {
                             + "user=root&password=123456");*/
             connection = DriverManager
                     .getConnection("jdbc:mysql://mysql-0.mysql.default.svc.cluster.local:3306/knowledge?"
-                            + "user=root&password=password");
+                            + "user=root&password=passtobereplaced");
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
         }

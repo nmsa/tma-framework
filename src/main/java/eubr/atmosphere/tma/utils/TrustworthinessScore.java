@@ -16,6 +16,16 @@ public class TrustworthinessScore implements Score {
     }
     
     @Override
+    public String toString() {
+        return "TrustworthinessScore [score=" + score
+                + ", resourceConsumptionScore=" + resourceConsumptionScore
+                + ", performanceScore=" + performanceScore
+                + ", podCount=" + podCount
+                + ", timestamp=" + timestamp
+                + "]";
+    }
+
+    @Override
     public Double getScore() {
         if (this.getPodCount() == 0)
             return 0.0;

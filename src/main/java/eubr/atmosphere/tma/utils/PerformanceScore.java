@@ -8,7 +8,6 @@ public class PerformanceScore implements Score {
     private Double score;
     private Double throughput;
     private Double responseTime;
-    private long timestamp;
 
     public Double getThroughput() {
         return throughput;
@@ -26,19 +25,10 @@ public class PerformanceScore implements Score {
         this.responseTime = responseTime;
     }
     
-    public long getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
-    }
-    
     @Override
     public String toString() {
         return "Score [throughput: " + this.getThroughput() +
-              ", responseTime: " + this.getResponseTime() +
-              ", timestamp: " + this.getTimestamp() + "]";
+              ", responseTime: " + this.getResponseTime() + "]";
     }
 
     @Override

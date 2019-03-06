@@ -9,6 +9,12 @@ public class PerformanceScore implements Score {
     private Double throughput;
     private Double responseTime;
 
+    public PerformanceScore() {
+        super();
+        this.throughput = 0.0;
+        this.responseTime = 0.0;
+    }
+
     public Double getThroughput() {
         return throughput;
     }

@@ -13,10 +13,12 @@ public class TrustworthinessScore implements Score {
         this.resourceConsumptionScore = resourceConsumptionPodScore;
         this.performanceScore = performanceScore;
         this.podCount = 0;
+        this.score = 0.0;
     }
     
     @Override
     public String toString() {
+        this.calculateScore();
         return "TrustworthinessScore [score=" + score
                 + ", resourceConsumptionScore=" + resourceConsumptionScore
                 + ", performanceScore=" + performanceScore
@@ -25,18 +27,21 @@ public class TrustworthinessScore implements Score {
                 + "]";
     }
 
+    private void calculateScore() {
+        if (this.getPodCount() == 0) {
+            this.score = 0.0;
+        } else {
+            this.score = resourceConsumptionScore.getScore() / this.getPodCount();
+
+            if (performanceScore.getScore() > 0.0)
+                this.score = 0.4 * this.score + 0.6 * performanceScore.getScore();
+        }
+    }
+
     @Override
     public Double getScore() {
-        if (this.getPodCount() == 0)
-            return 0.0;
-
-        this.score = resourceConsumptionScore.getScore() / this.getPodCount();
-
-        if (performanceScore.getScore() > 0.0)
-            this.score = 0.4 * this.getScore() + 0.6 * performanceScore.getScore();
         return this.score;
     }
-    
 
     public Integer getPodCount() {
         return podCount;

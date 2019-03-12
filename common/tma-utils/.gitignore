@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-*.asta.lock
-*.jpg.bak
-=======
 /target/
 .classpath
 .project
 .settings
 
->>>>>>> f56be3dab7473644c944352029454ad8533ab3a6

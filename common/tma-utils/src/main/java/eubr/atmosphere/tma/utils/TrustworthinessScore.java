@@ -50,7 +50,6 @@ public class TrustworthinessScore implements Score {
     public void setPodCount(Integer podCount) {
         this.podCount = podCount;
     }
-    
 
     public long getTimestamp() {
         return timestamp;
@@ -58,5 +57,13 @@ public class TrustworthinessScore implements Score {
 
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public ResourceConsumptionScore getResourceConsumptionScore() {
+        return this.resourceConsumptionScore;
+    }
+
+    public PerformanceScore getPerformanceScore() {
+        return this.performanceScore;
     }
 }

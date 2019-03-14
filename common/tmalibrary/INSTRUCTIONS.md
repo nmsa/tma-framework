@@ -17,6 +17,6 @@ python setup.py bdist_wheel
 
 To upload to the distribution packages to [Pypi](https://pypi.org/), you need to execute the following command:
 
-```python
+```sh
 python -m twine upload --repository-url https://upload.pypi.org/legacy/ dist/*
 ```

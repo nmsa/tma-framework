@@ -20,4 +20,4 @@ To use this library in the development of your probe, you need to include the fo
 from tmalibrary.probes import *
 ```
 
-**Note**: To upload a new version of this library, the (INSTRUCTIONS.md)[INSTRUCTIONS.md] file has all instructions needed.
+**Note**: To upload a new version of this library, the (INSTRUCTIONS.md)[https://github.com/eubr-atmosphere/tma-framework/blob/dev/common/common/tmalibrary/INSTRUCTIONS.md] file has all instructions needed.

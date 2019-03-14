@@ -17,5 +17,7 @@ pip install tmalibrary
 To use this library in the development of your probe, you just need to include the following lines in your probe main file, using the code below.
 
 ```python
-from tmalibrary import *
+from tmalibrary.probes import *
 ```
+
+**Note**: To upload a nwe version of this library, the INSTRUCTIONS.md file has all intructions needed.

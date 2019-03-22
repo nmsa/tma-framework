@@ -2,9 +2,9 @@ package eubr.atmosphere.tma.utils;
 
 public class PerformanceScore implements Score {
 
-    public static final Double MAX_THROUGHPUT = 100.00;
-    public static final Double MAX_RESPONSE_TIME = 100.00;
-    
+    public static final Double MAX_THROUGHPUT = 575.00;
+    public static final Double MAX_RESPONSE_TIME = 150.00;
+
     private Double score;
     private Double throughput;
     private Double responseTime;

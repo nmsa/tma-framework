@@ -41,6 +41,11 @@ public class PerformanceScore implements Score {
     public Double getScore() {
         Double a5 = this.getThroughput() / MAX_THROUGHPUT;
         Double a6 = this.getResponseTime() / MAX_RESPONSE_TIME;
+
+        // This operation transforms the response time into a benefit attribute
+        // as it is a cost attribute by default
+        a6 = 1.0 - a6;
+
         this.score = 0.5 * a5 + 0.5 * a6;
         
         return this.score;

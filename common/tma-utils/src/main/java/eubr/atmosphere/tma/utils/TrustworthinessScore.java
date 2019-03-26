@@ -34,7 +34,7 @@ public class TrustworthinessScore implements Score {
             this.score = resourceConsumptionScore.getScore() / this.getPodCount();
 
             if (performanceScore.getScore() > 0.0)
-                this.score = 0.4 * this.score + 0.6 * performanceScore.getScore();
+                this.score = 0.4 * (1 - this.score) + 0.6 * performanceScore.getScore();
         }
     }
 

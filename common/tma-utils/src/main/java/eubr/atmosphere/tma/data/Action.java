@@ -5,16 +5,26 @@ import java.util.List;
 
 public class Action {
 
+    private int actionId;
     private String actionName;
     private int resourceId;
     private int actuatorId;
     private List<Configuration> configurationList;
 
-    public Action(String action, int resourceId, int actuatorId) {
+    public Action(int actionId, String action, int resourceId, int actuatorId) {
+        this.actionId = actionId;
         this.actionName = action;
         this.resourceId = resourceId;
         this.actuatorId = actuatorId;
         this.configurationList = new ArrayList<Configuration>();
+    }
+
+    public int getActionId() {
+        return actionId;
+    }
+
+    public void setActionId(int actionId) {
+        this.actionId = actionId;
     }
 
     public String getAction() {

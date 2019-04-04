@@ -24,14 +24,14 @@ public class DatabaseManager {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+
         // Setup the connection with the DB
         try {
-            /*connection = DriverManager
-                    .getConnection("jdbc:mysql://localhost/knowledge?"
-                            + "user=root&password=123456");*/
-            connection = DriverManager
-                    .getConnection("jdbc:mysql://mysql-0.mysql.default.svc.cluster.local:3306/knowledge?"
-                            + "user=root&password=passtobereplaced");
+            if ((connection == null) || connection.isClosed()) {
+                connection = DriverManager
+                        .getConnection("jdbc:mysql://mysql-0.mysql.default.svc.cluster.local:3306/knowledge?"
+                                + "user=root&password=passtobereplaced");
+            }
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
         }

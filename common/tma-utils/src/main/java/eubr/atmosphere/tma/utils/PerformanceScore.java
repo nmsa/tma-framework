@@ -6,10 +6,10 @@ public class PerformanceScore implements Score {
     public static final Double MAX_RESPONSE_TIME = 150.00;
 
     // Values used for the z-normalization
-    public static final Double MEAN_THROUGHPUT = 206.4624;
-    public static final Double STD_DEV_THROUGHPUT = 197.0407;
-    public static final Double MEAN_RESPONSE_TIME = 38.6027;
-    public static final Double STD_RESPONSE_TIME = 209.7015;
+    public static final Double MEAN_THROUGHPUT = 202.2773;
+    public static final Double STD_DEV_THROUGHPUT = 204.1939;
+    public static final Double MEAN_RESPONSE_TIME = 16.2114;
+    public static final Double STD_RESPONSE_TIME = 4.8114;
 
     private Double score;
     private Double throughput;

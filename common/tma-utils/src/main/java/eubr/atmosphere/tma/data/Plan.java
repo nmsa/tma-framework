@@ -23,7 +23,7 @@ public class Plan {
         }
     }
     
-    private int planId;
+    private Integer planId;
     private int metricId;
     private int qualityModelId;
     private long valueTime;
@@ -35,11 +35,11 @@ public class Plan {
         this.actionList = new ArrayList<ActionPlan>();
     }
     
-    public int getPlanId() {
+    public Integer getPlanId() {
         return planId;
     }
 
-    public void setPlanId(int planId) {
+    public void setPlanId(Integer planId) {
         this.planId = planId;
     }
 

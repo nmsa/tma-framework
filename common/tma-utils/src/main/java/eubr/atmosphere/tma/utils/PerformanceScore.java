@@ -14,11 +14,15 @@ public class PerformanceScore implements Score {
     private Double score;
     private Double throughput;
     private Double responseTime;
+    private Double demand;
+    private Double rateRequestUnderContracted;
 
     public PerformanceScore() {
         super();
         this.throughput = 0.0;
         this.responseTime = 0.0;
+        this.demand = 0.0;
+        this.rateRequestUnderContracted = 0.0;
     }
 
     public Double getThroughput() {
@@ -36,11 +40,29 @@ public class PerformanceScore implements Score {
     public void setResponseTime(Double responseTime) {
         this.responseTime = responseTime;
     }
+
+    public Double getDemand() {
+        return demand;
+    }
+
+    public void setDemand(Double demand) {
+        this.demand = demand;
+    }
+
+    public Double getRateRequestUnderContracted() {
+        return rateRequestUnderContracted;
+    }
+
+    public void setRateRequestUnderContracted(Double rateRequestUnderContracted) {
+        this.rateRequestUnderContracted = rateRequestUnderContracted;
+    }
     
     @Override
     public String toString() {
         return "Score [throughput: " + this.getThroughput() +
-              ", responseTime: " + this.getResponseTime() + "]";
+              ", responseTime: " + this.getResponseTime() +
+              ", demand: " + this.getDemand() +
+              ", rateRequestUnderContracted: " + this.getRateRequestUnderContracted() + "]";
     }
 
     @Override

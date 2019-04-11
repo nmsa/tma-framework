@@ -65,8 +65,7 @@ public class PerformanceScore implements Score {
               ", rateRequestUnderContracted: " + this.getRateRequestUnderContracted() + "]";
     }
 
-    @Override
-    public Double getScore() {
+    public Double getScoreZNorm() {
         Double a5 = (this.getThroughput() - MEAN_THROUGHPUT) / STD_DEV_THROUGHPUT;
         Double a6 = (this.getResponseTime() - MEAN_RESPONSE_TIME) / STD_RESPONSE_TIME;
         this.score = 0.5 * a5 - 0.5 * a6;
@@ -74,7 +73,8 @@ public class PerformanceScore implements Score {
     }
 
     // this is the old version, which uses the maximum values to normalize.
-    public Double getScoreMinMaxNormalization() {
+    @Override
+    public Double getScore() {
         Double a5 = this.getThroughput() / MAX_THROUGHPUT;
         Double a6 = this.getResponseTime() / MAX_RESPONSE_TIME;
 

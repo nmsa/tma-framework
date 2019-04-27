@@ -100,7 +100,7 @@ ceph auth get-key client.admin
 echo [Output of the previous command]| base64
 ```
 
-After that you need to replace in line 393 of yaml file the key with the one returned by the previous command. Finally, you need to replace the line 449 of the yaml file with the IP or FQDN of Ceph machine. To deploy TMA platform with Ceph, you just need to execute the following command:
+After that you need to replace in line 398 of yaml file the key with the one returned by the previous command. Finally, you need to replace the line 454 of the yaml file with the IP or FQDN of Ceph machine. To deploy TMA platform with Ceph, you just need to execute the following command:
 
 ```sh
 kubectl create -f tma_deployment.yaml

@@ -1,0 +1,558 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: datadir
+  labels:
+    type: local
+spec:
+  capacity:
+    storage: 30Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /home/kubernetes/Desktop/volumes_zookeper
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: datadir-kafka
+  labels:
+    type: local
+spec:
+  capacity:
+    storage: 30Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /home/kubernetes/Desktop/volumes_kafka
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zk-hs
+  labels:
+    app: zk
+spec:
+  ports:
+  - port: 2888
+    name: server
+  - port: 3888
+    name: leader-election
+  clusterIP: None
+  selector:
+    app: zk
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zk-cs
+  labels:
+    app: zk
+spec:
+  ports:
+  - port: 2181
+    name: client
+  - port: 9100
+    name: metrics
+  selector:
+    app: zk
+---
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: zk
+spec:
+  serviceName: zk-hs
+  replicas: 1
+  podManagementPolicy: Parallel
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: zk
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: "app"
+                    operator: In
+                    values:
+                    - zk
+              topologyKey: "kubernetes.io/hostname"
+      containers:
+      - name: kubernetes-zookeeper
+        image: eubraatmosphere/tma-zookeeper
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "0.5"
+        ports:
+        - containerPort: 2181
+          name: client
+        - containerPort: 2888
+          name: server
+        - containerPort: 3888
+          name: leader-election
+        - containerPort: 9100
+          name: metrics
+        command:
+        - sh
+        - -c
+        - "start-zookeeper \
+          --servers=1 \
+          --data_dir=/var/lib/zookeeper/data \
+          --data_log_dir=/var/lib/zookeeper/data/log \
+          --conf_dir=/opt/zookeeper/conf \
+          --client_port=2181 \
+          --election_port=3888 \
+          --server_port=2888 \
+          --tick_time=2000 \
+          --init_limit=10 \
+          --sync_limit=5 \
+          --heap=512M \
+          --max_client_cnxns=60 \
+          --snap_retain_count=3 \
+          --purge_interval=12 \
+          --max_session_timeout=40000 \
+          --min_session_timeout=4000 \
+          --log_level=INFO"
+        readinessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - "zookeeper-ready 2181"
+          initialDelaySeconds: 10
+          timeoutSeconds: 5
+        livenessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - "zookeeper-ready 2181"
+          initialDelaySeconds: 10
+          timeoutSeconds: 5
+        volumeMounts:
+        - name: datadir
+          mountPath: /var/lib/zookeeper
+      securityContext:
+        fsGroup: 1000
+  volumeClaimTemplates:
+  - metadata:
+      name: datadir
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 10Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka-hs
+  labels:
+    app: kafka
+spec:
+  ports:
+  - port: 9093
+    name: server
+  - port: 9100
+    name: metrics
+  clusterIP: None
+  selector:
+    app: kafka
+---
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: kafka-pdb
+spec:
+  selector:
+    matchLabels:
+      app: kafka
+  maxUnavailable: 1
+---
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: kafka
+spec:
+  serviceName: kafka-hs
+  replicas: 1
+  podManagementPolicy: Parallel
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: kafka
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: "app"
+                    operator: In
+                    values:
+                    - kafka
+              topologyKey: "kubernetes.io/hostname"
+        podAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+             - weight: 1
+               podAffinityTerm:
+                 labelSelector:
+                    matchExpressions:
+                      - key: "app"
+                        operator: In
+                        values:
+                        - zk
+                 topologyKey: "kubernetes.io/hostname"
+      terminationGracePeriodSeconds: 300
+      containers:
+      - name: k8skafka
+        image: eubraatmosphere/tma-kafka
+        stdin: true
+        tty: true
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "0.5"
+        ports:
+        - containerPort: 9093
+          name: server
+        - containerPort: 9100
+          name: metrics
+        command: ["/bin/bash","-c", "kafka-server-start.sh /opt/kafka/config/server.properties --override broker.id=0 \
+           --override listeners=PLAINTEXT://:9093 \
+           --override zookeeper.connect=zk-0.zk-hs.default.svc.cluster.local:2181 \
+           --override log.dir=/var/lib/kafka \
+           --override auto.create.topics.enable=true \
+           --override auto.leader.rebalance.enable=true \
+           --override background.threads=10 \
+           --override compression.type=producer \
+           --override delete.topic.enable=false \
+           --override leader.imbalance.check.interval.seconds=300 \
+           --override leader.imbalance.per.broker.percentage=10 \
+           --override log.flush.interval.messages=9223372036854775807 \
+           --override log.flush.offset.checkpoint.interval.ms=60000 \
+           --override log.flush.scheduler.interval.ms=9223372036854775807 \
+           --override log.retention.bytes=-1 \
+           --override log.retention.hours=168 \
+           --override log.roll.hours=168 \
+           --override log.roll.jitter.hours=0 \
+           --override log.segment.bytes=1073741824 \
+           --override log.segment.delete.delay.ms=60000 \
+           --override message.max.bytes=1000012 \
+           --override min.insync.replicas=1 \
+           --override num.io.threads=8 \
+           --override num.network.threads=3 \
+           --override num.recovery.threads.per.data.dir=1 \
+           --override num.replica.fetchers=1 \
+           --override offset.metadata.max.bytes=4096 \
+           --override offsets.commit.required.acks=-1 \
+           --override offsets.commit.timeout.ms=5000 \
+           --override offsets.load.buffer.size=5242880 \
+           --override offsets.retention.check.interval.ms=600000 \
+           --override offsets.retention.minutes=1440 \
+           --override offsets.topic.compression.codec=0 \
+           --override offsets.topic.num.partitions=50 \
+           --override offsets.topic.replication.factor=3 \
+           --override offsets.topic.segment.bytes=104857600 \
+           --override queued.max.requests=500 \
+           --override quota.consumer.default=9223372036854775807 \
+           --override quota.producer.default=9223372036854775807 \
+           --override replica.fetch.min.bytes=1 \
+           --override replica.fetch.wait.max.ms=500 \
+           --override replica.high.watermark.checkpoint.interval.ms=5000 \
+           --override replica.lag.time.max.ms=10000 \
+           --override replica.socket.receive.buffer.bytes=65536 \
+           --override replica.socket.timeout.ms=30000 \
+           --override request.timeout.ms=30000 \
+           --override socket.receive.buffer.bytes=102400 \
+           --override socket.request.max.bytes=104857600 \
+           --override socket.send.buffer.bytes=102400 \
+           --override unclean.leader.election.enable=true \
+           --override zookeeper.session.timeout.ms=6000 \
+           --override zookeeper.set.acl=false \
+           --override broker.id.generation.enable=true \
+           --override connections.max.idle.ms=600000 \
+           --override controlled.shutdown.enable=true \
+           --override controlled.shutdown.max.retries=3 \
+           --override controlled.shutdown.retry.backoff.ms=5000 \
+           --override controller.socket.timeout.ms=30000 \
+           --override default.replication.factor=1 \
+           --override fetch.purgatory.purge.interval.requests=1000 \
+           --override group.max.session.timeout.ms=300000 \
+           --override group.min.session.timeout.ms=6000 \
+           --override inter.broker.protocol.version=0.10.2-IV0 \
+           --override log.cleaner.backoff.ms=15000 \
+           --override log.cleaner.dedupe.buffer.size=134217728 \
+           --override log.cleaner.delete.retention.ms=86400000 \
+           --override log.cleaner.enable=true \
+           --override log.cleaner.io.buffer.load.factor=0.9 \
+           --override log.cleaner.io.buffer.size=524288 \
+           --override log.cleaner.io.max.bytes.per.second=1.7976931348623157E308 \
+           --override log.cleaner.min.cleanable.ratio=0.5 \
+           --override log.cleaner.min.compaction.lag.ms=0 \
+           --override log.cleaner.threads=1 \
+           --override log.cleanup.policy=delete \
+           --override log.index.interval.bytes=4096 \
+           --override log.index.size.max.bytes=10485760 \
+           --override log.message.timestamp.difference.max.ms=9223372036854775807 \
+           --override log.message.timestamp.type=CreateTime \
+           --override log.preallocate=false \
+           --override log.retention.check.interval.ms=300000 \
+           --override max.connections.per.ip=2147483647 \
+           --override num.partitions=1 \
+           --override producer.purgatory.purge.interval.requests=1000 \
+           --override replica.fetch.backoff.ms=1000 \
+           --override replica.fetch.max.bytes=1048576 \
+           --override replica.fetch.response.max.bytes=10485760 \
+           --override reserved.broker.max.id=1000 & sleep 2 && \ 
+           kafka-topics.sh --create --topic topic-monitor --zookeeper zk-0.zk-hs.default.svc.cluster.local:2181 --partitions 1 --replication-factor 1 && \
+           kafka-topics.sh --create --topic queue-listener --zookeeper zk-0.zk-hs.default.svc.cluster.local:2181 --partitions 1 --replication-factor 1 && \
+           kafka-topics.sh --create --topic topic-planning --zookeeper zk-0.zk-hs.default.svc.cluster.local:2181 --partitions 1 --replication-factor 1 && \
+           kafka-topics.sh --create --topic topic-execute --zookeeper zk-0.zk-hs.default.svc.cluster.local:2181 --partitions 1 --replication-factor 1 && \
+           while true; do sleep 30; done;"] 
+
+        env:
+        - name: KAFKA_HEAP_OPTS
+          value : "-Xmx512M -Xms512M"
+        - name: KAFKA_OPTS
+          value: "-Dlogging.level=INFO"
+        volumeMounts:
+        - name: datadir
+          mountPath: /var/lib/kafka
+        readinessProbe:
+          exec:
+           command:
+            - sh
+            - -c
+            - "/opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server=localhost:9093"
+      securityContext:
+        runAsUser: 0
+        fsGroup: 0
+  volumeClaimTemplates:
+  - metadata:
+      name: datadir
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 10Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: flume
+  labels:
+    app: flume
+spec:
+  ports:
+  - port: 9100
+    name: metrics
+  clusterIP: None
+  selector:
+    app: flume
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: flume
+spec:
+  selector:
+    matchLabels:
+      app: flume
+  serviceName: "flume"
+  template:
+    metadata:
+      labels:
+        app: flume
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: flume
+        image: eubraatmosphere/tma-flume
+        tty: true
+        volumeMounts:
+        - name: testing-mode
+          mountPath: /testingmode
+        ports:
+        - containerPort: 9100
+          name: metrics
+        command: ["/bin/bash","-c", " sleep 120 && cd /flume/apache-flume-1.6.0-bin/bin && ./flume-ng agent --conf /flume/apache-flume-1.6.0-bin/conf/ -f /flume/apache-flume-1.6.0-bin/conf/flume.conf -n agent -Dflume.root.logger=INFO,console"]
+      volumes:
+        - name: testing-mode
+          hostPath:
+            path: /home/kubernetes/Desktop/testingmode
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ceph-secret
+data:
+  key: QVFENzZITmNQUTJ5Q1JBQVU4OUJTdEEzaFdYMnl1cU1DNGlKSkE9PQo=
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mysql-pass
+type: Opaque
+data:
+  mysql-root-password: cGFzc3RvYmVyZXBsYWNlZA==
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+spec:
+  ports:
+  - port: 3306
+  selector:
+    app: mysql
+  clusterIP: None
+---
+apiVersion: apps/v1beta1 # for versions before 1.9.0 use apps/v1beta2
+kind: StatefulSet
+metadata:
+  name: mysql
+spec:
+  serviceName: "mysql"
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - image: eubraatmosphere/tma-knowledge-mysql
+        name: mysql
+        env:
+          # Use secret in real usage
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-pass
+              key: mysql-root-password
+        ports:
+        - containerPort: 3306
+          name: mysql
+        volumeMounts:
+        - name: mysql-vol
+          mountPath: /var/lib/mysql
+          subPath: mysql
+      volumes:
+        - name: mysql-vol
+          rbd:
+            monitors:
+              - 192.168.122.37:6789
+            pool: rbd
+            image: tma_k_db_mysql
+            user: admin
+            secretRef:
+              name: ceph-secret
+            fsType: ext4
+            readOnly: false
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: monitor-server
+  labels:
+    app: monitor-server
+spec:
+  type: NodePort
+  ports:
+  - port: 5000
+    nodePort: 32025
+    name: monitor
+  - port: 9100
+    name: metrics
+  clusterIP: 10.100.166.233
+  selector:
+    app: monitor-server
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: monitor-server
+spec:
+  selector:
+    matchLabels:
+      app: monitor-server # has to match .spec.template.metadata.labels
+  serviceName: "monitor-server"
+  template:
+    metadata:
+      labels:
+        app: monitor-server # has to match .spec.selector.matchLabels
+    spec:
+      containers:
+      - name: monitor-server
+        image: tma-monitor/server-python:0.1
+        ports:
+        - containerPort: 5000
+        - containerPort: 9100
+          name: metrics
+---
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: tma-analyze
+
+spec:
+  selector:
+    matchLabels:
+      run: tma-analyze
+  template:
+    metadata:
+      labels:
+        run: tma-analyze
+    spec:
+      containers:
+      - name: tma-analyze
+        image: eubraatmosphere/tma-analyze
+---
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: tma-planning
+
+spec:
+  selector:
+    matchLabels:
+      run: tma-planning
+  template:
+    metadata:
+      labels:
+        run: tma-planning
+    spec:
+      containers:
+      - name: tma-planning
+        image: eubraatmosphere/tma-planning
+---
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: tma-execute
+
+spec:
+  selector:
+    matchLabels:
+      run: tma-execute
+  template:
+    metadata:
+      labels:
+        run: tma-execute
+    spec:
+      containers:
+      - name: tma-execute
+        image: eubraatmosphere/tma-execute

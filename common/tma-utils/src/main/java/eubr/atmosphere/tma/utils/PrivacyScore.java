@@ -2,14 +2,19 @@ package eubr.atmosphere.tma.utils;
 
 import java.util.Date;
 
+/**
+ * Used to provide privacy score attributes
+ * 
+ * @author JorgeLuiz
+ */
 public class PrivacyScore implements Score {
 
-	private Double score;
 	private Integer configurationProfileId;
 	private Integer attributeId;
-	private Double k;
 	private Double instanceId;
+	private Double k;
 	private Double threshold;
+	private Double score;
 	private Date timestamp;
 	
 	public PrivacyScore(Double score, Integer configurationProfileId, Integer attributeId, Double k, Double instanceId, Date timestamp) {
@@ -34,18 +39,6 @@ public class PrivacyScore implements Score {
 				+ timestamp + "]";
 	}
 
-	public Date getTimestamp() {
-		return timestamp;
-	}
-
-	public void setTimestamp(Date timestamp) {
-		this.timestamp = timestamp;
-	}
-
-	public void setScore(Double score) {
-		this.score = score;
-	}
-
 	public Integer getConfigurationProfileId() {
 		return configurationProfileId;
 	}
@@ -62,14 +55,6 @@ public class PrivacyScore implements Score {
 		this.attributeId = attributeId;
 	}
 
-	public Double getK() {
-		return k;
-	}
-
-	public void setK(Double k) {
-		this.k = k;
-	}
-
 	public Double getInstanceId() {
 		return instanceId;
 	}
@@ -78,12 +63,32 @@ public class PrivacyScore implements Score {
 		this.instanceId = instanceId;
 	}
 
+	public Double getK() {
+		return k;
+	}
+
+	public void setK(Double k) {
+		this.k = k;
+	}
+
 	public Double getThreshold() {
 		return threshold;
 	}
 
 	public void setThreshold(Double threshold) {
 		this.threshold = threshold;
+	}
+
+	public Date getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(Date timestamp) {
+		this.timestamp = timestamp;
+	}
+
+	public void setScore(Double score) {
+		this.score = score;
 	}
 
 }

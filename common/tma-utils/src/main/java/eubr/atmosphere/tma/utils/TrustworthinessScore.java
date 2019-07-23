@@ -5,13 +5,15 @@ public class TrustworthinessScore implements Score {
     private Double score;
     private ResourceConsumptionScore resourceConsumptionScore; 
     private PerformanceScore performanceScore;
+    private PrivacyScore privacyScore;
     private Integer podCount;
     private long timestamp;
     
     public TrustworthinessScore(ResourceConsumptionScore resourceConsumptionPodScore, 
-            PerformanceScore performanceScore) {
+            PerformanceScore performanceScore, PrivacyScore privacyScore) {
         this.resourceConsumptionScore = resourceConsumptionPodScore;
         this.performanceScore = performanceScore;
+        this.privacyScore = privacyScore;
         this.podCount = 0;
         this.score = 0.0;
     }
@@ -22,6 +24,7 @@ public class TrustworthinessScore implements Score {
         return "TrustworthinessScore [score=" + score
                 + ", resourceConsumptionScore=" + resourceConsumptionScore
                 + ", performanceScore=" + performanceScore
+                + ", privacyScore=" + privacyScore
                 + ", podCount=" + podCount
                 + ", timestamp=" + timestamp
                 + "]";
@@ -66,4 +69,13 @@ public class TrustworthinessScore implements Score {
     public PerformanceScore getPerformanceScore() {
         return this.performanceScore;
     }
+
+	public PrivacyScore getPrivacyScore() {
+		return privacyScore;
+	}
+
+	public void setPrivacyScore(PrivacyScore privacyScore) {
+		this.privacyScore = privacyScore;
+	}
+    
 }

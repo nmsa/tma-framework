@@ -7,7 +7,7 @@ import java.util.Date;
  * 
  * @author JorgeLuiz
  */
-public class PrivacyScore implements Score {
+public class PrivacyScore extends AbstractTrustworthinessScore implements Score {
 
 	private Integer configurationProfileId;
 	private Integer attributeId;
@@ -16,15 +16,16 @@ public class PrivacyScore implements Score {
 	private Double threshold;
 	private Double score;
 	private Date timestamp;
-	
-	public PrivacyScore(Double score, Integer configurationProfileId, Integer attributeId, Double k, Double instanceId, Date timestamp) {
+
+	public PrivacyScore(Integer configurationProfileId, Integer attributeId, Double instanceId, Double score,
+			Date timestamp) {
 		super();
-		this.score = score;
 		this.configurationProfileId = configurationProfileId;
 		this.attributeId = attributeId;
-		this.k = k;
 		this.instanceId = instanceId;
+		this.score = score;
 		this.timestamp = timestamp;
+		this.planId = null;
 	}
 
 	@Override
@@ -32,11 +33,8 @@ public class PrivacyScore implements Score {
 		return score;
 	}
 
-	@Override
-	public String toString() {
-		return "PrivacyScore [score=" + score + ", configurationProfileId=" + configurationProfileId + ", attributeId="
-				+ attributeId + ", k=" + k + ", instanceId=" + instanceId + ", threshold=" + threshold + ", timestamp="
-				+ timestamp + "]";
+	public void setScore(Double score) {
+		this.score = score;
 	}
 
 	public Integer getConfigurationProfileId() {
@@ -87,8 +85,16 @@ public class PrivacyScore implements Score {
 		this.timestamp = timestamp;
 	}
 
-	public void setScore(Double score) {
-		this.score = score;
+	@Override
+	public String toString() {
+		return "PrivacyScore [score=" + score + ", configurationProfileId=" + configurationProfileId + ", attributeId="
+				+ attributeId + ", k=" + k + ", instanceId=" + instanceId + ", threshold=" + threshold + ", timestamp="
+				+ timestamp + "]";
 	}
 
+	@Override
+	public Integer getPlanId() {
+		return null;
+	}
+	
 }

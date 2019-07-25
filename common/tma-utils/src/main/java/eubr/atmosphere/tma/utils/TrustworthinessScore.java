@@ -1,6 +1,6 @@
 package eubr.atmosphere.tma.utils;
 
-public class TrustworthinessScore implements Score {
+public class TrustworthinessScore extends AbstractTrustworthinessScore implements Score {
 
     private Double score;
     private ResourceConsumptionScore resourceConsumptionScore; 
@@ -76,6 +76,12 @@ public class TrustworthinessScore implements Score {
 
 	public void setPrivacyScore(PrivacyScore privacyScore) {
 		this.privacyScore = privacyScore;
+	}
+
+	@Override
+	public Integer getPlanId() {
+		// TODO Auto-generated method stub
+		return null;
 	}
     
 }

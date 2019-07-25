@@ -4,30 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Plan {
-
-    // Maybe this class will need to be moved to tma-utils
-    
-    public enum STATUS {
-        TO_DO,
-        IN_PROGRESS,
-        COMPLETED;
         
-        @Override
-        public String toString() {
-            return Integer.toString(ordinal());
-        }
-
-        public static STATUS valueOf(int ordinal) {
-            return (ordinal < values().length) ? values()[ordinal]
-                    : COMPLETED;
-        }
-    }
-    
     private Integer planId;
-    private int metricId;
+    private int metricId;   // TODO: Metric is related with action (remove it)
     private int qualityModelId;
-    private long valueTime;
-    private STATUS status; // TODO: define the possible status in a enum
+    private long valueTime;  // change name to createdTime
+    private PlanStatus status;  // change name to planStatus
     private List<ActionPlan> actionList;
 
     public Plan() {
@@ -59,11 +41,11 @@ public class Plan {
         this.qualityModelId = qualityModelId;
     }
 
-    public STATUS getStatus() {
+    public PlanStatus getStatus() {
         return status;
     }
 
-    public void setStatus(STATUS status) {
+    public void setStatus(PlanStatus status) {
         this.status = status;
     }
 

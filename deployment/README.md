@@ -75,10 +75,10 @@ After completing all steps of the previous section, it is necessary to initializ
 kubectl proxy --address IP_MASTER_MACHINE --port=8089 --accept-hosts '.*' &
 ```
 
-After that, you need to build the base `Docker` image of TMA_Monitor. To do that, you should run the following commnads in Worker node:
+After that, you need to build the base `Docker` image of TMA_Monitor using [`build.sh`](https://github.com/eubr-atmosphere/tma-framework-m/blob/master/development/dependency/python-base/build.sh) script. To do that, you should run the following commnads in Worker node:
 
 ```sh
-cd ../development/dependency/python-base/
+cd tma-framework-m/development/dependency/python-base/
 sh build.sh
 ```
 

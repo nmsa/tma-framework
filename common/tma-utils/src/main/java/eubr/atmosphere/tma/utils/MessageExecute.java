@@ -1,5 +1,9 @@
 package eubr.atmosphere.tma.utils;
 
+import java.util.List;
+
+import eubr.atmosphere.tma.data.Configuration;
+
 /**
  * Message format to be sent to execute component 
  * 
@@ -7,42 +11,51 @@ package eubr.atmosphere.tma.utils;
  */
 public class MessageExecute {
 
+	private String action;
 	private Integer resourceId;
-	private String actionName;
-	private Integer actuatorId;
-	private PrivacyScore configuration;
+	private Integer messageId;
+	private long timestamp;
+	private List<Configuration> configuration;
 	
-	public MessageExecute(Integer resourceId, String actionName, Integer actuatorId,
-			PrivacyScore configuration) {
+	public MessageExecute(String action, Integer resourceId, Integer messageId, long timestamp,
+			List<Configuration> configuration) {
 		super();
+		this.action = action;
 		this.resourceId = resourceId;
-		this.actionName = actionName;
-		this.actuatorId = actuatorId;
+		this.messageId = messageId;
+		this.timestamp = timestamp;
 		this.configuration = configuration;
 	}
 	
+	public String getAction() {
+		return action;
+	}
+	public void setAction(String action) {
+		this.action = action;
+	}
 	public Integer getResourceId() {
 		return resourceId;
 	}
 	public void setResourceId(Integer resourceId) {
 		this.resourceId = resourceId;
 	}
-	public String getActionName() {
-		return actionName;
+	public Integer getMessageId() {
+		return messageId;
 	}
-	public void setActionName(String actionName) {
-		this.actionName = actionName;
+	public void setMessageId(Integer messageId) {
+		this.messageId = messageId;
 	}
-    public Integer getActuatorId() {
-    	return this.actuatorId;
-    }
-	public void setActuatorId(Integer actuatorId) {
-		this.actuatorId = actuatorId;
+	public long getTimestamp() {
+		return timestamp;
 	}
-	public PrivacyScore getConfiguration() {
+	public void setTimestamp(long timestamp) {
+		this.timestamp = timestamp;
+	}
+	public List<Configuration> getConfiguration() {
 		return configuration;
 	}
-	public void setConfiguration(PrivacyScore configuration) {
+	public void setConfiguration(List<Configuration> configuration) {
 		this.configuration = configuration;
 	}	
+	
 }

@@ -18,14 +18,14 @@ public class PrivacyScore extends AbstractTrustworthinessScore implements Score 
 	private Date timestamp;
 
 	public PrivacyScore(Integer configurationProfileId, Integer attributeId, Double instanceId, Double score,
-			Date timestamp) {
+			Date timestamp, Integer planId) {
 		super();
 		this.configurationProfileId = configurationProfileId;
 		this.attributeId = attributeId;
 		this.instanceId = instanceId;
 		this.score = score;
 		this.timestamp = timestamp;
-		this.planId = null;
+		this.planId = planId;
 	}
 
 	@Override

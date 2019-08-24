@@ -1,14 +1,14 @@
-from KeyManager import KeyManager
+from .KeyManager import KeyManager
 import base64
 import json
-from ActuatorPayload import ActuatorPayload
+from .ActuatorPayload import ActuatorPayload
 
 class HandleRequest:
 
 	def generateResponse(self, plainResponse):
 
 		keymanager = KeyManager()
-		privateKeyPath = "keys/priv-key-actuator" 
+		privateKeyPath = "keys/priv-key-actuator"
 		privateKey = keymanager.getPrivateKey(privateKeyPath)
 
 		signedResponse = keymanager.sign(plainResponse,privateKey)
@@ -26,7 +26,7 @@ class HandleRequest:
 
 		# TODO: Handle Requests where the key is not valid
 
-		privateKeyPath = "keys/priv-key-actuator" 
+		privateKeyPath = "keys/priv-key-actuator"
 		keymanager = KeyManager()
 		privateKey = keymanager.getPrivateKey(privateKeyPath)
 		decryptData = keymanager.decrypt(request, privateKey)

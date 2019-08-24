@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name='tmalibrary',
-    version='5.5',
+    version='7.0',
     author='Rui Silva',
     author_email='rfsilva@student.dei.uc.pt',
     description='Libraries to TMA',

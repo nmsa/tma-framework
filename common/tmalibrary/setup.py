@@ -8,7 +8,7 @@ setup(
     version='7.0',
     author='Rui Silva',
     author_email='rfsilva@student.dei.uc.pt',
-    description='Libraries to TMA',
+    description='Probe and Actuator Library',
     long_description = long_description,
     long_description_content_type = "text/markdown",
     url='https://github.com/rfrsilva/tmalibrary',

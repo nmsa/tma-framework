@@ -1,12 +1,21 @@
 from setuptools import setup, find_packages
 
+with open("README.md", "r") as fh:
+	long_description = fh.read()
+
 setup(
     name='tmalibrary',
-    version='0.8',
-    packages=find_packages(),
-    url='https://github.com/eubr-atmosphere/tma-framework/tree/dev/common/common/tmalibrary',
-    license='Apache 2.0',
+    version='7.0',
     author='Rui Silva',
     author_email='rfsilva@student.dei.uc.pt',
-    description='Libraries to TMA'
+    description='Probe and Actuator Library',
+    long_description = long_description,
+    long_description_content_type = "text/markdown",
+    url='https://github.com/rfrsilva/tmalibrary',
+    packages=find_packages(),
+    classifiers=[
+    	"Programming Language :: Python :: 3",
+    	"License :: OSI Approved :: MIT License",
+    	"Operating System :: OS Independent",
+    ],
 )

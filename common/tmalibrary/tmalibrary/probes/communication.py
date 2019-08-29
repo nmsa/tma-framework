@@ -2,10 +2,10 @@ import json
 import time
 from datetime import datetime
 import requests
-from data import Data
-from message import Message
-from message import ComplexEncoder
-from observation import Observation
+from .data import Data
+from .message import Message
+from .message import ComplexEncoder
+from .observation import Observation
 
 
 class Communication:

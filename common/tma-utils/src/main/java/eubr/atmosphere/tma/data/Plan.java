@@ -3,10 +3,26 @@ package eubr.atmosphere.tma.data;
 import java.util.ArrayList;
 import java.util.List;
 
-import eubr.atmosphere.tma.data.ActionPlan.STATUS;
-
 public class Plan {
+
+	// Maybe this class will need to be moved to tma-utils
+    
+    public enum STATUS {
+        TO_DO,
+        IN_PROGRESS,
+        COMPLETED;
         
+        @Override
+        public String toString() {
+            return Integer.toString(ordinal());
+        }
+
+        public static STATUS valueOf(int ordinal) {
+            return (ordinal < values().length) ? values()[ordinal]
+                    : COMPLETED;
+        }
+    }
+	
     private Integer planId;
     private int metricId;
     private int qualityModelId;

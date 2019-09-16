@@ -3,13 +3,15 @@ package eubr.atmosphere.tma.data;
 import java.util.ArrayList;
 import java.util.List;
 
+import eubr.atmosphere.tma.data.ActionPlan.STATUS;
+
 public class Plan {
         
     private Integer planId;
-    private int metricId;   // TODO: Metric is related with action (remove it)
+    private int metricId;
     private int qualityModelId;
-    private long valueTime;  // change name to createdTime
-    private PlanStatus status;  // change name to planStatus
+    private long valueTime;
+    private STATUS status;
     private List<ActionPlan> actionList;
 
     public Plan() {
@@ -41,11 +43,11 @@ public class Plan {
         this.qualityModelId = qualityModelId;
     }
 
-    public PlanStatus getStatus() {
+    public STATUS getStatus() {
         return status;
     }
 
-    public void setStatus(PlanStatus status) {
+    public void setStatus(STATUS status) {
         this.status = status;
     }
 

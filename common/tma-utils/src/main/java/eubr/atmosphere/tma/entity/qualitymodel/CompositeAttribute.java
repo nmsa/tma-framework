@@ -66,8 +66,7 @@ public class CompositeAttribute extends Metric implements Serializable {
 		}
 
 		MetricData metricData = new MetricData();
-		metricData.getId().setValueTime(new Timestamp(System.currentTimeMillis()));
-		metricData.getId().setMetricId(qm.getId().getMetricId());
+		metricData.getId().setMetricId(this.getId());
 		//TODO: verify how to set resourceId
 
 		switch (attributeAggregationOperator) {
@@ -84,6 +83,7 @@ public class CompositeAttribute extends Metric implements Serializable {
 			throw new UnsupportedOperationException();
 		}
 
+		metricData.getId().setValueTime(new Timestamp(System.currentTimeMillis()));
 		// Stores calculated score in HistoricalDate
 		QualityModelManager qmm = new QualityModelManager();
 		qmm.saveMetricData(metricData);

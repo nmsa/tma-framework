@@ -29,7 +29,7 @@ public class DatabaseManager {
         try {
             if ((connection == null) || connection.isClosed()) {
                 connection = DriverManager
-                        .getConnection("jdbc:mysql://10.98.170.151:3306/knowledgenew?"
+                        .getConnection("jdbc:mysql://10.98.170.151:3306/knowledge?"
                                 + "user=root&password=passtobereplaced");
             }
         } catch (SQLException e) {

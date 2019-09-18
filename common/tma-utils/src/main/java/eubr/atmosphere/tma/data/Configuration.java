@@ -2,9 +2,9 @@ package eubr.atmosphere.tma.data;
 
 public class Configuration {
 
-	private int configurationId;
     private String keyName;
     private String value; // This field is different from the one of the database
+    private int configurationId;
 
     public Configuration(int configurationId, String keyName, String value) {
         this.configurationId = configurationId;

@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Plan {
 
-	// Maybe this class will need to be moved to tma-utils
+    // Maybe this class will need to be moved to tma-utils
     
     public enum STATUS {
         TO_DO,
@@ -22,12 +22,12 @@ public class Plan {
                     : COMPLETED;
         }
     }
-	
+    
     private Integer planId;
     private int metricId;
     private int qualityModelId;
     private long valueTime;
-    private STATUS status;
+    private STATUS status; // TODO: define the possible status in a enum
     private List<ActionPlan> actionList;
 
     public Plan() {

@@ -1,36 +1,28 @@
 package eubr.atmosphere.tma.utils;
 
-import java.util.Date;
-
 /**
  * Used to provide privacy score attributes
  * 
  * @author JorgeLuiz
  */
-public class PrivacyScore extends AbstractTrustworthinessScore implements Score {
+public class PrivacyScore implements Score {
 
 	private Integer configurationProfileId;
 	private Integer attributeId;
-	private Double instanceId;
-	private Double k;
-	private Double threshold;
 	private Double score;
-	private Date timestamp;
+	private Double threshold;
 
-	public PrivacyScore(Integer configurationProfileId, Integer attributeId, Double instanceId, Double score,
-			Date timestamp, Integer planId) {
+	public PrivacyScore(Integer configurationProfileId, Integer attributeId, Double score, Double threshold) {
 		super();
 		this.configurationProfileId = configurationProfileId;
 		this.attributeId = attributeId;
-		this.instanceId = instanceId;
 		this.score = score;
-		this.timestamp = timestamp;
-		this.planId = planId;
+		this.threshold = threshold;
 	}
 
 	@Override
 	public Double getScore() {
-		return score;
+		return this.score;
 	}
 
 	public void setScore(Double score) {
@@ -53,48 +45,12 @@ public class PrivacyScore extends AbstractTrustworthinessScore implements Score 
 		this.attributeId = attributeId;
 	}
 
-	public Double getInstanceId() {
-		return instanceId;
-	}
-
-	public void setInstanceId(Double instanceId) {
-		this.instanceId = instanceId;
-	}
-
-	public Double getK() {
-		return k;
-	}
-
-	public void setK(Double k) {
-		this.k = k;
-	}
-
 	public Double getThreshold() {
 		return threshold;
 	}
 
 	public void setThreshold(Double threshold) {
 		this.threshold = threshold;
-	}
-
-	public Date getTimestamp() {
-		return timestamp;
-	}
-
-	public void setTimestamp(Date timestamp) {
-		this.timestamp = timestamp;
-	}
-
-	@Override
-	public String toString() {
-		return "PrivacyScore [score=" + score + ", configurationProfileId=" + configurationProfileId + ", attributeId="
-				+ attributeId + ", k=" + k + ", instanceId=" + instanceId + ", threshold=" + threshold + ", timestamp="
-				+ timestamp + "]";
-	}
-
-	@Override
-	public Integer getPlanId() {
-		return null;
 	}
 	
 }

@@ -9,6 +9,12 @@ public class TrustworthinessScore implements Score {
     private Integer podCount;
     private long timestamp;
     
+	private Integer configurationProfileId;
+	private Integer attributeId;
+	private Double threshold;
+    
+    public TrustworthinessScore() {}
+    
     public TrustworthinessScore(ResourceConsumptionScore resourceConsumptionPodScore, 
             PerformanceScore performanceScore, PrivacyScore privacyScore) {
         this.resourceConsumptionScore = resourceConsumptionPodScore;
@@ -18,7 +24,21 @@ public class TrustworthinessScore implements Score {
         this.score = 0.0;
     }
     
-    @Override
+    public TrustworthinessScore(ResourceConsumptionScore resourceConsumptionScore, PerformanceScore performanceScore,
+			PrivacyScore privacyScore, Integer configurationProfileId, Integer attributeId,
+			Double threshold) {
+		super();
+		this.resourceConsumptionScore = resourceConsumptionScore;
+		this.performanceScore = performanceScore;
+		this.privacyScore = privacyScore;
+		this.configurationProfileId = configurationProfileId;
+		this.attributeId = attributeId;
+		this.threshold = threshold;
+        this.podCount = 0;
+        this.score = 0.0;
+	}
+
+	@Override
     public String toString() {
         this.calculateScore();
         return "TrustworthinessScore [score=" + score
@@ -71,11 +91,36 @@ public class TrustworthinessScore implements Score {
     }
 
 	public PrivacyScore getPrivacyScore() {
-		return privacyScore;
+		return this.privacyScore;
 	}
 
 	public void setPrivacyScore(PrivacyScore privacyScore) {
 		this.privacyScore = privacyScore;
 	}
+
+	public Integer getConfigurationProfileId() {
+		return configurationProfileId;
+	}
+
+	public void setConfigurationProfileId(Integer configurationProfileId) {
+		this.configurationProfileId = configurationProfileId;
+	}
+
+	public Integer getAttributeId() {
+		return attributeId;
+	}
+
+	public void setAttributeId(Integer attributeId) {
+		this.attributeId = attributeId;
+	}
+
+	public Double getThreshold() {
+		return threshold;
+	}
+
+	public void setThreshold(Double threshold) {
+		this.threshold = threshold;
+	}
+	
     
 }

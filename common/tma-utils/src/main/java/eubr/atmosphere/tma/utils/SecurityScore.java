@@ -1,12 +1,12 @@
 package eubr.atmosphere.tma.utils;
 
-public class SecurityCloudEAScore implements Score {
+public class SecurityScore implements Score {
 
-    // metrics used to calculte QQM
+    // metrics used to calculte QM
 
 	private Double score;
 	// Constructor of SecurityCloudEAScore 
-    public SecurityCloudEAScore() {
+    public SecurityScore() {
         super();
         // initialization of this class variables
     }
@@ -24,6 +24,8 @@ public class SecurityCloudEAScore implements Score {
     @Override
     public Double getScore() {
         // operations to calcute score
+
+        this.score = 0;
         
         return this.score;
     }

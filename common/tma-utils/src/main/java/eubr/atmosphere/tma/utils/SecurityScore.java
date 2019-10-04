@@ -1,8 +1,5 @@
 package eubr.atmosphere.tma.utils;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-
 public class SecurityScore implements Score {
 
 	private Double score;
@@ -264,6 +261,8 @@ public class SecurityScore implements Score {
 				+ ", Integrity Score=" + this.integrityLevel_I + ", Confidentiality Score="
 				+ this.confidentialityLevel_C + ", timestamp=" + System.currentTimeMillis() + "]";
 	}
+	
+	
 
 	private void calculateScore() {
 		int bestPractices[][] = splitDigits(existenceOfBestPractice, this.numberOfPolicies);
@@ -273,6 +272,11 @@ public class SecurityScore implements Score {
 		int securityControls[][] = splitDigits(existenceOfSecurityControl, this.numberOfTechnologies);
 
 		// calculate complianceWithVendorBestPractices_VBP
+		if (this.VBPP_AttributesWeights == null)
+			this.VBPP_AttributesWeights = setDefaultWeights(bestPractices[0].length);
+		if(this.VBP_AttributesWeights == null)
+			this.VBP_AttributesWeights = setDefaultWeights(this.numberOfPolicies);
+		
 		this.complianceWithVendorBestPractices_VBP = 0;
 		this.complianceWithBestPracticesForEachPolicy_VBPP = new double[this.numberOfPolicies];
 		for (int i = 0; i < this.numberOfPolicies; i++) {
@@ -285,6 +289,10 @@ public class SecurityScore implements Score {
 		}
 
 		// calculate complianceWithIndustryDefinedConfiguration_SIC
+		if (this.SICP_AttributesWeights == null)
+			this.SICP_AttributesWeights = setDefaultWeights(securityDefinitions[0].length);
+		if(this.SIC_AttributesWeights == null)
+			this.SIC_AttributesWeights = setDefaultWeights(this.numberOfPolicies);
 
 		this.complianceWithIndustryDefinedConfiguration_SIC = 0;
 		this.complianceWithIndustryDefConfForEachPolicy_SICP = new double[this.numberOfPolicies];
@@ -299,6 +307,11 @@ public class SecurityScore implements Score {
 
 		// calculate complianceWithAllSecurityStandards_SS
 
+		if (this.CSS_AttributesWeiths == null)
+			this.CSS_AttributesWeiths = setDefaultWeights(checkAreas[0].length);
+		if(this.SS_AttributesWeights == null)
+			this.SS_AttributesWeights = setDefaultWeights(this.numberOfStandards);
+		
 		this.complianceWithAllSecurityStandards_SS = 0;
 		this.complianceWithEachSecurityStandard_CSS = new double[this.numberOfStandards];
 		for (int i = 0; i < this.numberOfStandards; i++) {
@@ -310,7 +323,11 @@ public class SecurityScore implements Score {
 		}
 
 		// calculate totalSecurityPoliciesInPlace_SP
-
+		if (this.P_AttributesWeights == null)
+			this.P_AttributesWeights = setDefaultWeights(policies[0].length);
+		if(this.SP_AttributesWeights == null)
+			this.SP_AttributesWeights = setDefaultWeights(this.numberOfTechnologies);
+		
 		this.totalSecurityPoliciesInPlace_SP = 0;
 		this.policiesInPlaceForEachTechnology_P = new double[this.numberOfTechnologies];
 		for (int i = 0; i < this.numberOfTechnologies; i++) {
@@ -322,6 +339,11 @@ public class SecurityScore implements Score {
 		}
 
 		// calculate totalSecurityCoverage_SC
+		if (this.SCT_AttributesWeights == null)
+			this.SCT_AttributesWeights = setDefaultWeights(securityControls[0].length);
+		if(this.SC_AttributesWeights == null)
+			this.SC_AttributesWeights = setDefaultWeights(this.numberOfTechnologies);
+		
 		this.totalSecurityCoverage_SC = 0;
 		this.securityCoverageOfEachTechnology_SCT = new double[this.numberOfTechnologies];
 		for (int i = 0; i < this.numberOfTechnologies; i++) {
@@ -333,6 +355,9 @@ public class SecurityScore implements Score {
 		}
 
 		// calculate availabilityLevel_A
+		if (this.A_AttributesWeights == null)
+			this.A_AttributesWeights  = setDefaultWeights(3);
+		
 		this.availabilityLevel_A = this.totalSecurityCoverage_SC * this.A_AttributesWeights[0]
 				+ this.complianceWithIndustryDefinedConfiguration_SIC * this.A_AttributesWeights[1]
 				+ this.complianceWithVendorBestPractices_VBP * this.A_AttributesWeights[2];
@@ -341,24 +366,36 @@ public class SecurityScore implements Score {
 		this.integrityLevel_I = this.complianceWithAllSecurityStandards_SS;
 
 		// calculate confidentialityLevel_C;
-		// C_AttributesWeights
+		if (this.C_AttributesWeights == null)
+			this.C_AttributesWeights  = setDefaultWeights(2);
+		
 		this.confidentialityLevel_C = this.totalSecurityCoverage_SC * this.C_AttributesWeights[0]
 				+ this.totalSecurityPoliciesInPlace_SP * this.C_AttributesWeights[1];
 
 		// calculate final score
-		// S_AttributesWeights
+		if (this.S_AttributesWeights == null)
+			this.S_AttributesWeights  = setDefaultWeights(3);
+		
 		this.score = this.availabilityLevel_A * S_AttributesWeights[0] + this.integrityLevel_I * S_AttributesWeights[1]
 				+ this.confidentialityLevel_C * S_AttributesWeights[2];
+	}
+	
+	private double[] setDefaultWeights(int numOfAtt) {
+		double[] weights = new double[numOfAtt];
+		double w = 1.0/numOfAtt;
+		for (int i=0; i<numOfAtt;i++)
+			weights[i]=w;
+		return weights;
 	}
 
 	private static int[][] splitDigits(double num, int numberOfPolicies) {
 		long number = (long) num;
-		int length = String.valueOf(number).length();
+		int length = String.valueOf(number).length()-1;
 		System.out.println(number + " " + length);
 		int[][] digits = new int[numberOfPolicies][length / numberOfPolicies];
 		int l = 0;
 		int nop = 0;
-		while (number > 0) {
+		while (number > 1) {
 			digits[nop][l++] = (int) (number % 10);
 			number = number / 10;
 

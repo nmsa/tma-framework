@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -27,16 +26,15 @@ public class LeafAttribute extends Metric implements Serializable {
 
 	private static final long serialVersionUID = 4281619788455567958L;
 
-	@EmbeddedId
-	private LeafAttributePK id;
+	private int descriptionId;
 
 	private double maximumThreshold;
-	
+
 	@Enumerated(EnumType.ORDINAL)
 	private MetricAggregationOperator metricAggregationOperator = MetricAggregationOperator.AVERAGE;
 
 	private double minimumThreshold;
-	
+
 	@Enumerated(EnumType.ORDINAL)
 	private MetricNormalizationKind normalizationKind = MetricNormalizationKind.BENEFIT;
 
@@ -45,14 +43,6 @@ public class LeafAttribute extends Metric implements Serializable {
 	private int numSamples;
 
 	public LeafAttribute() {
-	}
-
-	public LeafAttributePK getId() {
-		return this.id;
-	}
-
-	public void setId(LeafAttributePK id) {
-		this.id = id;
 	}
 
 	public LeafAttribute(double maximumThreshold, MetricAggregationOperator metricAggregationOperator,
@@ -67,7 +57,7 @@ public class LeafAttribute extends Metric implements Serializable {
 		this.numSamples = numSamples;
 	}
 
-	public MetricData calculate(ConfigurationProfile profile, QualityModel qm, Date timestamp)
+	public MetricData calculate(ConfigurationProfile profile, QualityModel qm, MetricData metricData, Date timestamp)
 			throws UndefinedMetricException {
 
 		if (profile == null || ListUtils.isEmpty(profile.getPreferences()) || qm == null) {
@@ -75,35 +65,33 @@ public class LeafAttribute extends Metric implements Serializable {
 					"No defined preference or quality model for leaf attribute " + this.getMetricName());
 		}
 
-		MetricData metricData = new MetricData();
-		metricData.getId().setValueTime(new Timestamp(System.currentTimeMillis()));
-		metricData.getId().setMetricId(qm.getId().getMetricId());
-		//TODO: verify how to set resourceId
-
 		switch (metricAggregationOperator) {
 		case AVERAGE:
-			metricData.setValue(calculateAverage(profile, timestamp));
+			metricData.setValue(calculateAverage(profile, metricData, timestamp));
 			break;
 		case MINIMUM:
-			metricData.setValue(calculateMinimum(profile, timestamp));
+			metricData.setValue(calculateMinimum(profile, metricData, timestamp));
 			break;
 		case MAXIMUM:
-			metricData.setValue(calculateMaximum(profile, timestamp));
+			metricData.setValue(calculateMaximum(profile, metricData, timestamp));
 			break;
 		case SUM:
-			metricData.setValue(calculateSum(profile, timestamp));
+			metricData.setValue(calculateSum(profile, metricData, timestamp));
 			break;
 		default:
 			throw new UnsupportedOperationException();
 		}
-
+		
+		metricData.getId().setValueTime(new Timestamp(System.currentTimeMillis()));
+		metricData.getId().setMetricId(qm.getId().getMetricId());
+		// Stores calculated score in MetricData
 		QualityModelManager qmm = new QualityModelManager();
 		qmm.saveMetricData(metricData);
 		
 		return metricData;
 	}
 
-	protected double calculateAverage(ConfigurationProfile profile, Date timestamp) {
+	protected double calculateAverage(ConfigurationProfile profile, MetricData metricData, Date timestamp) {
 		
 		double average = 0;
 		double amount = 0;
@@ -115,8 +103,13 @@ public class LeafAttribute extends Metric implements Serializable {
 			Preference preference = iterPreference.next();
 			Integer metricId = preference.getId().getMetricId();
 			
-			if (metricId == this.getId().getMetricId()) {
-				List<Data> data =  qmm.getLimitedDataListByIdAndTimestamp(this.getId().getDescriptionId(), timestamp);
+			if (metricId == this.getId()) {
+				List<Data> data =  qmm.getLimitedDataListByIdAndTimestamp(this.getDescriptionId(), timestamp);
+
+				// Set resource id in MetricData
+				Data d = ListUtils.getFirstElement(data);
+				metricData.setResourceId(d.getId().getResourceId());
+				
 				amount += (double) data.size();
 				Iterator<Data> iterData = data.iterator();
 				while (iterData.hasNext()) {
@@ -132,7 +125,7 @@ public class LeafAttribute extends Metric implements Serializable {
 		return average / amount;
 	}
 
-	protected double calculateMinimum(ConfigurationProfile profile, Date timestamp) {
+	protected double calculateMinimum(ConfigurationProfile profile, MetricData metricData, Date timestamp) {
 		double minimum = 0;
 		QualityModelManager qmm = new QualityModelManager();
 		Iterator<Preference> iterPreference = profile.getPreferences().iterator();
@@ -141,8 +134,13 @@ public class LeafAttribute extends Metric implements Serializable {
 			Preference preference = iterPreference.next();
 			Integer metricId = preference.getId().getMetricId();
 
-			if (metricId == this.getId().getMetricId()) {
-				List<Data> data = qmm.getLimitedDataListByIdAndTimestamp(this.getId().getDescriptionId(), timestamp);
+			if (metricId == this.getId()) {
+				List<Data> data = qmm.getLimitedDataListByIdAndTimestamp(this.getDescriptionId(), timestamp);
+				
+				// Set resource id in MetricData
+				Data d = ListUtils.getFirstElement(data);
+				metricData.setResourceId(d.getId().getResourceId());
+				
 				Iterator<Data> iterData = data.iterator();
 				while (iterData.hasNext()) {
 					Data measure = iterData.next();
@@ -158,7 +156,7 @@ public class LeafAttribute extends Metric implements Serializable {
 		return minimum;
 	}
 
-	protected double calculateMaximum(ConfigurationProfile profile, Date timestamp) {
+	protected double calculateMaximum(ConfigurationProfile profile, MetricData metricData, Date timestamp) {
 		double maximum = 0;
 		QualityModelManager qmm = new QualityModelManager();
 		Iterator<Preference> iterPreference = profile.getPreferences().iterator();
@@ -167,8 +165,13 @@ public class LeafAttribute extends Metric implements Serializable {
 			Preference preference = iterPreference.next();
 			Integer metricId = preference.getId().getMetricId();
 
-			if (metricId == this.getId().getMetricId()) {
-				List<Data> data = qmm.getLimitedDataListByIdAndTimestamp(this.getId().getDescriptionId(), timestamp);
+			if (metricId == this.getId()) {
+				List<Data> data = qmm.getLimitedDataListByIdAndTimestamp(this.getDescriptionId(), timestamp);
+				
+				// Set resource id in MetricData
+				Data d = ListUtils.getFirstElement(data);
+				metricData.setResourceId(d.getId().getResourceId());
+				
 				Iterator<Data> iterData = data.iterator();
 				while (iterData.hasNext()) {
 					Data measure = iterData.next();
@@ -184,7 +187,7 @@ public class LeafAttribute extends Metric implements Serializable {
 		return maximum;
 	}
 
-	protected double calculateSum(ConfigurationProfile profile, Date timestamp) {
+	protected double calculateSum(ConfigurationProfile profile, MetricData metricData, Date timestamp) {
 		double sum = 0;
 		QualityModelManager qmm = new QualityModelManager();
 		Iterator<Preference> iterPreference = profile.getPreferences().iterator();
@@ -193,8 +196,13 @@ public class LeafAttribute extends Metric implements Serializable {
 			Preference preference = iterPreference.next();
 			Integer metricId = preference.getId().getMetricId();
 
-			if (metricId == this.getId().getMetricId()) {
-				List<Data> data = qmm.getLimitedDataListByIdAndTimestamp(this.getId().getDescriptionId(), timestamp);
+			if (metricId == this.getId()) {
+				List<Data> data = qmm.getLimitedDataListByIdAndTimestamp(this.getDescriptionId(), timestamp);
+				
+				// Set resource id in MetricData
+				Data d = ListUtils.getFirstElement(data);
+				metricData.setResourceId(d.getId().getResourceId());
+				
 				Iterator<Data> iterData = data.iterator();
 				while (iterData.hasNext()) {
 					Data measure = iterData.next();
@@ -209,7 +217,15 @@ public class LeafAttribute extends Metric implements Serializable {
 		}
 		return sum;
 	}
-	
+
+	public int getDescriptionId() {
+		return descriptionId;
+	}
+
+	public void setDescriptionId(int descriptionId) {
+		this.descriptionId = descriptionId;
+	}
+
 	public double getMaximumThreshold() {
 		return this.maximumThreshold;
 	}

@@ -68,7 +68,7 @@ public class ConfigurationProfile implements Serializable {
 
 	public Preference getPreference(Metric child) {
 		for (Preference p : preferences) {
-			if (child.getMetricId() == p.getId().getMetricId()) {
+			if (child.getId() == p.getId().getMetricId()) {
 				return p;
 			}
 		}

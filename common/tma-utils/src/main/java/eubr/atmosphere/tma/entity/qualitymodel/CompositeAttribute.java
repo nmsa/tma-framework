@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -34,9 +33,6 @@ import eubr.atmosphere.tma.utils.ListUtils;
 public class CompositeAttribute extends Metric implements Serializable {
 
 	private static final long serialVersionUID = -4332026256817210342L;
-
-	@EmbeddedId
-	private CompositeAttributePK id;
 	
 	@Enumerated(EnumType.ORDINAL)
 	private AttributeAggregationOperator attributeAggregationOperator = AttributeAggregationOperator.NEUTRALITY;
@@ -49,29 +45,17 @@ public class CompositeAttribute extends Metric implements Serializable {
 
 	public CompositeAttribute() {
 	}
-
-	public CompositeAttributePK getId() {
-		return this.id;
-	}
-
-	public void setId(CompositeAttributePK id) {
-		this.id = id;
-	}
 	
-	public MetricData calculate(ConfigurationProfile profile, QualityModel qm, Date timestamp) throws UndefinedException {
+	public MetricData calculate(ConfigurationProfile profile, QualityModel qm, MetricData metricData, Date timestamp) throws UndefinedException {
 		
 		if (profile == null || ListUtils.isEmpty(profile.getPreferences()) || qm == null) {
 			throw new UndefinedMetricException(
 					"No defined preference or quality model for leaf attribute " + this.getMetricName());
 		}
 
-		MetricData metricData = new MetricData();
-		metricData.getId().setMetricId(this.getId());
-		//TODO: verify how to set resourceId
-
 		switch (attributeAggregationOperator) {
 		case NEUTRALITY:
-			metricData.setValue(calculateNeutrality(profile, qm, timestamp));
+			metricData.setValue(calculateNeutrality(profile, qm, metricData, timestamp));
 			break;
 		case REPLACEABILITY:
 			metricData.setValue(calculateReplaceability(profile, qm, timestamp));
@@ -83,22 +67,23 @@ public class CompositeAttribute extends Metric implements Serializable {
 			throw new UnsupportedOperationException();
 		}
 
+		metricData.getId().setMetricId(this.getId());
 		metricData.getId().setValueTime(new Timestamp(System.currentTimeMillis()));
-		// Stores calculated score in HistoricalDate
+		// Stores calculated score in MetricData
 		QualityModelManager qmm = new QualityModelManager();
 		qmm.saveMetricData(metricData);
 		
 		return metricData;
 	}
-	
-	protected double calculateNeutrality(ConfigurationProfile profile, QualityModel qm, Date timestamp) throws UndefinedException {
+
+	protected double calculateNeutrality(ConfigurationProfile profile, QualityModel qm, MetricData metricData, Date timestamp) throws UndefinedException {
 		double score = 0.0;
 		if (ListUtils.isNotEmpty(children)) {
 			for (Metric child : children) {
 				if (!child.equals(this)) {
 					Preference childPref = profile.getPreference(child);
 					try {
-						score += child.calculate(profile, qm, timestamp).getValue() * childPref.getWeight();
+						score += child.calculate(profile, qm, metricData, timestamp).getValue() * childPref.getWeight();
 					} catch (UndefinedMetricException e) {
 						e.printStackTrace();
 					}
@@ -115,7 +100,7 @@ public class CompositeAttribute extends Metric implements Serializable {
 				if (!child.equals(this)) {
 					Preference childPref = profile.getPreference(child);
 					try {
-						double scoreAux = child.calculate(profile, qm, timestamp).getValue() * childPref.getWeight();
+						double scoreAux = child.calculate(profile, qm, null, timestamp).getValue() * childPref.getWeight();
 						if (scoreAux < childPref.getThreshold()) {
 							score = 0.0;
 							break;
@@ -137,7 +122,7 @@ public class CompositeAttribute extends Metric implements Serializable {
 				if (!child.equals(this)) {
 					Preference childPref = profile.getPreference(child);
 					try {
-						double scoreAux = child.calculate(profile, qm, timestamp).getValue() * childPref.getWeight();
+						double scoreAux = child.calculate(profile, qm, null, timestamp).getValue() * childPref.getWeight();
 						if (scoreAux > childPref.getThreshold()) {
 							score += scoreAux;
 						}

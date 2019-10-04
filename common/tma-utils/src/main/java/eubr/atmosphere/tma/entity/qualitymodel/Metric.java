@@ -58,18 +58,18 @@ public abstract class Metric implements Serializable {
 	@JoinColumn(name="compositeattributeId")
 	private CompositeAttribute compositeattribute;
 	
-	public abstract MetricData calculate(ConfigurationProfile user, QualityModel qm, Date timestamp)
+	public abstract MetricData calculate(ConfigurationProfile user, QualityModel qm, MetricData metricData, Date timestamp)
 			throws UndefinedException;
 	
 	public Metric() {
 	}
 
-	public int getMetricId() {
+	public int getId() {
 		return this.metricId;
 	}
 
-	public void setMetricId(int metricId) {
-		this.metricId = metricId;
+	public void setId(int id) {
+		this.metricId = id;
 	}
 
 	public int getBlockLevel() {

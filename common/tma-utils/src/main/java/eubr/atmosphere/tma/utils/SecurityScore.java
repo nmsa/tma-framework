@@ -20,22 +20,17 @@ public class SecurityScore implements Score {
 	// metrics used for calculation of security Score
 
 	private double complianceWithVendorBestPractices_VBP;
-	private double[] complianceWithBestPracticesForEachPolicy_VBPP;
-	private int numberOfPolicies = 5;
+	private static final int numberOfPolicies = 5;
 
 	private double complianceWithIndustryDefinedConfiguration_SIC;
-	private double[] complianceWithIndustryDefConfForEachPolicy_SICP;
 
 	private double complianceWithAllSecurityStandards_SS;
-	private double[] complianceWithEachSecurityStandard_CSS;
-	private int numberOfStandards = 5;
+	private static final int numberOfStandards = 5;
 
 	private double totalSecurityPoliciesInPlace_SP;
-	private double[] policiesInPlaceForEachTechnology_P;
-	private int numberOfTechnologies = 5;
+	private static final int numberOfTechnologies = 5;
 
 	private double totalSecurityCoverage_SC;
-	private double[] securityCoverageOfEachTechnology_SCT;
 
 	private double availabilityLevel_A;
 	private double integrityLevel_I;
@@ -105,8 +100,6 @@ public class SecurityScore implements Score {
 		this.existenceOfSecurityDefnition = existenceOfSecurityDefnition;
 	}
 
-	//////// setters and getters for number of policies, standards, and technologies
-	//////// in place
 
 	//////// setters and getters for attributes weights
 	public double[] getS_AttributesWeights() {
@@ -261,98 +254,28 @@ public class SecurityScore implements Score {
 				+ ", Integrity Score=" + this.integrityLevel_I + ", Confidentiality Score="
 				+ this.confidentialityLevel_C + ", timestamp=" + System.currentTimeMillis() + "]";
 	}
-	
-	
 
 	private void calculateScore() {
-		int bestPractices[][] = splitDigits(existenceOfBestPractice, this.numberOfPolicies);
-		int securityDefinitions[][] = splitDigits(existenceOfSecurityDefnition, this.numberOfPolicies);
-		int checkAreas[][] = splitDigits(existenceOfCheckAreas, this.numberOfStandards);
-		int policies[][] = splitDigits(existenceOfPolicy, this.numberOfTechnologies);
-		int securityControls[][] = splitDigits(existenceOfSecurityControl, this.numberOfTechnologies);
+		int bestPractices[][] = splitDigits(existenceOfBestPractice, numberOfPolicies);
+		int securityDefinitions[][] = splitDigits(existenceOfSecurityDefnition, numberOfPolicies);
+		int checkAreas[][] = splitDigits(existenceOfCheckAreas, numberOfStandards);
+		int policies[][] = splitDigits(existenceOfPolicy, numberOfTechnologies);
+		int securityControls[][] = splitDigits(existenceOfSecurityControl, numberOfTechnologies);
 
 		// calculate complianceWithVendorBestPractices_VBP
-		if (this.VBPP_AttributesWeights == null)
-			this.VBPP_AttributesWeights = setDefaultWeights(bestPractices[0].length);
-		if(this.VBP_AttributesWeights == null)
-			this.VBP_AttributesWeights = setDefaultWeights(this.numberOfPolicies);
+		this.complianceWithVendorBestPractices_VBP = calculateMetric(numberOfPolicies,bestPractices, this.VBPP_AttributesWeights, this.VBP_AttributesWeights);
 		
-		this.complianceWithVendorBestPractices_VBP = 0;
-		this.complianceWithBestPracticesForEachPolicy_VBPP = new double[this.numberOfPolicies];
-		for (int i = 0; i < this.numberOfPolicies; i++) {
-			for (int j = 0; j < bestPractices[i].length; j++)
-				this.complianceWithBestPracticesForEachPolicy_VBPP[i] += bestPractices[i][j]
-						* this.VBPP_AttributesWeights[j];
-
-			this.complianceWithVendorBestPractices_VBP += this.complianceWithBestPracticesForEachPolicy_VBPP[i]
-					* this.VBP_AttributesWeights[i];
-		}
-
 		// calculate complianceWithIndustryDefinedConfiguration_SIC
-		if (this.SICP_AttributesWeights == null)
-			this.SICP_AttributesWeights = setDefaultWeights(securityDefinitions[0].length);
-		if(this.SIC_AttributesWeights == null)
-			this.SIC_AttributesWeights = setDefaultWeights(this.numberOfPolicies);
-
-		this.complianceWithIndustryDefinedConfiguration_SIC = 0;
-		this.complianceWithIndustryDefConfForEachPolicy_SICP = new double[this.numberOfPolicies];
-		for (int i = 0; i < this.numberOfPolicies; i++) {
-			for (int j = 0; j < securityDefinitions[i].length; j++)
-				this.complianceWithIndustryDefConfForEachPolicy_SICP[i] += securityDefinitions[i][j]
-						* this.SICP_AttributesWeights[j];
-
-			this.complianceWithIndustryDefinedConfiguration_SIC += this.complianceWithIndustryDefConfForEachPolicy_SICP[i]
-					* this.SIC_AttributesWeights[i];
-		}
+		this.complianceWithIndustryDefinedConfiguration_SIC = calculateMetric(numberOfPolicies,securityDefinitions, this.SICP_AttributesWeights, this.SIC_AttributesWeights);
 
 		// calculate complianceWithAllSecurityStandards_SS
-
-		if (this.CSS_AttributesWeiths == null)
-			this.CSS_AttributesWeiths = setDefaultWeights(checkAreas[0].length);
-		if(this.SS_AttributesWeights == null)
-			this.SS_AttributesWeights = setDefaultWeights(this.numberOfStandards);
-		
-		this.complianceWithAllSecurityStandards_SS = 0;
-		this.complianceWithEachSecurityStandard_CSS = new double[this.numberOfStandards];
-		for (int i = 0; i < this.numberOfStandards; i++) {
-			for (int j = 0; j < checkAreas[i].length; j++)
-				this.complianceWithEachSecurityStandard_CSS[i] += checkAreas[i][j] * this.CSS_AttributesWeiths[j];
-
-			this.complianceWithAllSecurityStandards_SS += this.complianceWithEachSecurityStandard_CSS[i]
-					* this.SS_AttributesWeights[i];
-		}
+		this.complianceWithAllSecurityStandards_SS= calculateMetric(numberOfStandards,checkAreas,this.CSS_AttributesWeiths,this.SS_AttributesWeights);
 
 		// calculate totalSecurityPoliciesInPlace_SP
-		if (this.P_AttributesWeights == null)
-			this.P_AttributesWeights = setDefaultWeights(policies[0].length);
-		if(this.SP_AttributesWeights == null)
-			this.SP_AttributesWeights = setDefaultWeights(this.numberOfTechnologies);
-		
-		this.totalSecurityPoliciesInPlace_SP = 0;
-		this.policiesInPlaceForEachTechnology_P = new double[this.numberOfTechnologies];
-		for (int i = 0; i < this.numberOfTechnologies; i++) {
-			for (int j = 0; j < policies[i].length; j++)
-				this.policiesInPlaceForEachTechnology_P[i] += policies[i][j] * this.P_AttributesWeights[j];
-
-			this.totalSecurityPoliciesInPlace_SP += this.policiesInPlaceForEachTechnology_P[i]
-					* this.SP_AttributesWeights[i];
-		}
+		this.totalSecurityPoliciesInPlace_SP = calculateMetric(numberOfTechnologies, policies, this.P_AttributesWeights, this.SP_AttributesWeights);
 
 		// calculate totalSecurityCoverage_SC
-		if (this.SCT_AttributesWeights == null)
-			this.SCT_AttributesWeights = setDefaultWeights(securityControls[0].length);
-		if(this.SC_AttributesWeights == null)
-			this.SC_AttributesWeights = setDefaultWeights(this.numberOfTechnologies);
-		
-		this.totalSecurityCoverage_SC = 0;
-		this.securityCoverageOfEachTechnology_SCT = new double[this.numberOfTechnologies];
-		for (int i = 0; i < this.numberOfTechnologies; i++) {
-			for (int j = 0; j < securityControls[i].length; j++)
-				this.securityCoverageOfEachTechnology_SCT[i] += securityControls[i][j] * this.SCT_AttributesWeights[j];
-
-			this.totalSecurityCoverage_SC += this.securityCoverageOfEachTechnology_SCT[i]
-					* this.SC_AttributesWeights[i];
-		}
+		this.totalSecurityCoverage_SC = calculateMetric(numberOfTechnologies,securityControls,this.SCT_AttributesWeights,this.SC_AttributesWeights);
 
 		// calculate availabilityLevel_A
 		if (this.A_AttributesWeights == null)
@@ -380,6 +303,28 @@ public class SecurityScore implements Score {
 				+ this.confidentialityLevel_C * S_AttributesWeights[2];
 	}
 	
+	private double calculateMetric(int numOfAttributes, int[][] ArrtibutesValues, double[] SubAttributesWeights,
+			double[] AttributesWeights) {
+		
+		if (SubAttributesWeights == null)
+			SubAttributesWeights = setDefaultWeights(ArrtibutesValues[0].length);
+		if(AttributesWeights == null)
+			AttributesWeights = setDefaultWeights(numOfAttributes);
+		
+		double metric = 0.0;
+		double[] subattribute = new double[numOfAttributes];
+		for (int i = 0; i < numOfAttributes; i++) {
+			for (int j = 0; j < ArrtibutesValues[i].length; j++)
+				subattribute[i] += ArrtibutesValues[i][j]
+						* SubAttributesWeights[j];
+
+			metric += subattribute[i]
+					* AttributesWeights[i];
+		}
+		
+		return metric;
+	}
+
 	private double[] setDefaultWeights(int numOfAtt) {
 		double[] weights = new double[numOfAtt];
 		double w = 1.0/numOfAtt;

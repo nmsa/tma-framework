@@ -22,7 +22,7 @@ import eubr.atmosphere.tma.utils.ListUtils;
  */
 @Entity
 @NamedQuery(name="LeafAttribute.findAll", query="SELECT l FROM LeafAttribute l")
-public class LeafAttribute extends Metric implements Serializable {
+public class LeafAttribute extends MetricAttributeView implements Serializable {
 
 	private static final long serialVersionUID = 4281619788455567958L;
 
@@ -62,7 +62,7 @@ public class LeafAttribute extends Metric implements Serializable {
 
 		if (profile == null || ListUtils.isEmpty(profile.getPreferences()) || qm == null) {
 			throw new UndefinedMetricException(
-					"No defined preference or quality model for leaf attribute " + this.getMetricName());
+					"No defined preference or quality model for leaf attribute " + this.getName());
 		}
 
 		switch (metricAggregationOperator) {

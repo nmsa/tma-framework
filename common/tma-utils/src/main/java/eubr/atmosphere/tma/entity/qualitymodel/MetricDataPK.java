@@ -1,7 +1,10 @@
 package eubr.atmosphere.tma.entity.qualitymodel;
 
 import java.io.Serializable;
-import javax.persistence.*;
+
+import javax.persistence.Embeddable;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  * The primary key class for the MetricData database table.
@@ -9,8 +12,8 @@ import javax.persistence.*;
  */
 @Embeddable
 public class MetricDataPK implements Serializable {
-	//default serial version id, required for serializable classes.
-	private static final long serialVersionUID = 1L;
+
+	private static final long serialVersionUID = -3816108786691682169L;
 
 	private int metricId;
 

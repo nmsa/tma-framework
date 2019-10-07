@@ -25,10 +25,10 @@ public class Preference implements Serializable {
 
 	private double weight;
 
-	//bi-directional one-to-one association to Attribute
-	@ManyToOne
-	@JoinColumn(name="metricId")
-	private Metric metric;
+//	//bi-directional one-to-one association to Attribute
+//	@ManyToOne
+//	@JoinColumn(name="metricId")
+//	private MetricAttributeView metric;
 	
 	//bi-directional many-to-one association to ConfigurationProfile
 	@ManyToOne
@@ -62,12 +62,25 @@ public class Preference implements Serializable {
 		this.weight = weight;
 	}
 
+//	public MetricAttributeView getMetric() {
+//		return metric;
+//	}
+//
+//	public void setMetric(MetricAttributeView metric) {
+//		this.metric = metric;
+//	}
+
 	public ConfigurationProfile getConfigurationprofile() {
 		return configurationprofile;
 	}
 
 	public void setConfigurationprofile(ConfigurationProfile configurationprofile) {
 		this.configurationprofile = configurationprofile;
+	}
+	
+	@Override
+	public String toString() {
+		return "Preference [threshold=" + threshold + ", weight=" + weight + "]";
 	}
 
 }

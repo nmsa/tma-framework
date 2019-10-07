@@ -4,8 +4,6 @@ import java.io.Serializable;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 
 
@@ -16,7 +14,8 @@ import javax.persistence.NamedQuery;
 @Entity
 @NamedQuery(name="MetricData.findAll", query="SELECT m FROM MetricData m")
 public class MetricData implements Serializable {
-	private static final long serialVersionUID = 1L;
+
+	private static final long serialVersionUID = 3587381440538246279L;
 
 	@EmbeddedId
 	private MetricDataPK id;
@@ -25,10 +24,10 @@ public class MetricData implements Serializable {
 
 	private double value;
 
-	//bi-directional many-to-one association to Attribute
-	@ManyToOne
-	@JoinColumn(name="metricId")
-	private Metric metric;
+//	//bi-directional many-to-one association to Attribute
+//	@ManyToOne
+//	@JoinColumn(name="metricId")
+//	private MetricAttributeView metric;
 	
 	public MetricData() {
 	}

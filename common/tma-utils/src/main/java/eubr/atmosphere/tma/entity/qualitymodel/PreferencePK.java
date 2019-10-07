@@ -1,7 +1,8 @@
 package eubr.atmosphere.tma.entity.qualitymodel;
 
 import java.io.Serializable;
-import javax.persistence.*;
+
+import javax.persistence.Embeddable;
 
 /**
  * The primary key class for the Preference database table.
@@ -9,8 +10,8 @@ import javax.persistence.*;
  */
 @Embeddable
 public class PreferencePK implements Serializable {
-	//default serial version id, required for serializable classes.
-	private static final long serialVersionUID = 1L;
+
+	private static final long serialVersionUID = 6341927676184570413L;
 
 	private int configurationProfileID;
 

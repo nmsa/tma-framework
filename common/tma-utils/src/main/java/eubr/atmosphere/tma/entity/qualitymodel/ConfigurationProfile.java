@@ -66,7 +66,7 @@ public class ConfigurationProfile implements Serializable {
 		this.preferences = preferences;
 	}
 
-	public Preference getPreference(Metric child) {
+	public Preference getPreference(MetricAttributeView child) {
 		for (Preference p : preferences) {
 			if (child.getId() == p.getId().getMetricId()) {
 				return p;

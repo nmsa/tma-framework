@@ -1,12 +1,11 @@
 package eubr.atmosphere.tma.database;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -15,23 +14,20 @@ import org.slf4j.LoggerFactory;
 import eubr.atmosphere.tma.entity.qualitymodel.Data;
 import eubr.atmosphere.tma.entity.qualitymodel.DataPK;
 import eubr.atmosphere.tma.entity.qualitymodel.MetricData;
-import eubr.atmosphere.tma.entity.qualitymodel.MetricDataPK;
 
 public class QualityModelManager {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(QualityModelManager.class);
 
 	public int saveMetricData(MetricData metricData) {
-		String sql = "INSERT INTO MetricData(id, resourceId, value) VALUES (?, ?, ?)";
+		String sql = "INSERT INTO MetricData(metricId, valueTime, value, resourceId) VALUES (?, ?, ?, ?)";
 		PreparedStatement ps;
 		try {
 			ps = DatabaseManager.getConnectionInstance().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-			MetricDataPK metricDataPK = new MetricDataPK();
-			metricDataPK.setMetricId(metricData.getId().getMetricId());
-			metricDataPK.setValueTime(metricData.getId().getValueTime());
-			ps.setObject(1, metricDataPK);
-			ps.setInt(2, metricData.getResourceId());
+			ps.setInt(1, metricData.getMetricId().getMetricId());
+			ps.setDate(2, new Date(metricData.getMetricId().getValueTime().getTime()));
 			ps.setDouble(3, metricData.getValue());
+			ps.setDouble(4, metricData.getResourceId());
 			DatabaseManager databaseManager = new DatabaseManager();
 			return databaseManager.execute(ps);
 		} catch (SQLException e) {
@@ -40,17 +36,16 @@ public class QualityModelManager {
 		return -1;
 	}
 	
-	public List<Data> getLimitedDataListByIdAndTimestamp(Integer descriptionId, Date date) {
+	public List<Data> getLimitedDataListByIdAndTimestamp(Integer descriptionId) {
 
 		List<Data> dataList = new ArrayList<>();
 		PreparedStatement ps = null;
-		String sql = "SELECT d.probeId, d.descriptionId, d.resourceId, d.valueTime, d.value FROM Data d WHERE d.descriptionId = ? and d.valueTime = ?";
+		String sql = "SELECT d.probeId, d.descriptionId, d.resourceId, d.valueTime, d.value FROM Data d WHERE d.descriptionId = ?";
 
 		try {
 
 			ps = DatabaseManager.getConnectionInstance().prepareStatement(sql);
 			ps.setInt(1, descriptionId);
-			ps.setTimestamp(2, new Timestamp(date.getTime()));
 
 			ResultSet rs = DatabaseManager.executeQuery(ps);
 			if (rs.next()) {

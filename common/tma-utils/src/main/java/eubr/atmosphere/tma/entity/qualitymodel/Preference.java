@@ -16,7 +16,8 @@ import javax.persistence.NamedQuery;
 @Entity
 @NamedQuery(name="Preference.findAll", query="SELECT p FROM Preference p")
 public class Preference implements Serializable {
-	private static final long serialVersionUID = 1L;
+
+	private static final long serialVersionUID = 8207767523864725705L;
 
 	@EmbeddedId
 	private PreferencePK id;

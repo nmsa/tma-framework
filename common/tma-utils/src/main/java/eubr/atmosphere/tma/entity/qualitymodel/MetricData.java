@@ -18,7 +18,7 @@ public class MetricData implements Serializable {
 	private static final long serialVersionUID = 3587381440538246279L;
 
 	@EmbeddedId
-	private MetricDataPK id;
+	private MetricDataPK metricId;
 
 	private int resourceId;
 
@@ -32,12 +32,12 @@ public class MetricData implements Serializable {
 	public MetricData() {
 	}
 
-	public MetricDataPK getId() {
-		return this.id;
+	public MetricDataPK getMetricId() {
+		return metricId;
 	}
 
-	public void setId(MetricDataPK id) {
-		this.id = id;
+	public void setMetricId(MetricDataPK metricId) {
+		this.metricId = metricId;
 	}
 
 	public int getResourceId() {

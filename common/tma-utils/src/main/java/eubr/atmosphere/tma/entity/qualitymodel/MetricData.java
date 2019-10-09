@@ -20,14 +20,9 @@ public class MetricData implements Serializable {
 	@EmbeddedId
 	private MetricDataPK metricId;
 
-	private int resourceId;
+	private Integer resourceId;
 
 	private double value;
-
-//	//bi-directional many-to-one association to Attribute
-//	@ManyToOne
-//	@JoinColumn(name="metricId")
-//	private MetricAttributeView metric;
 	
 	public MetricData() {
 	}
@@ -40,11 +35,11 @@ public class MetricData implements Serializable {
 		this.metricId = metricId;
 	}
 
-	public int getResourceId() {
+	public Integer getResourceId() {
 		return this.resourceId;
 	}
 
-	public void setResourceId(int resourceId) {
+	public void setResourceId(Integer resourceId) {
 		this.resourceId = resourceId;
 	}
 

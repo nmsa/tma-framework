@@ -27,7 +27,7 @@ public class QualityModelManager {
 			ps.setInt(1, metricData.getMetricId().getMetricId());
 			ps.setDate(2, new Date(metricData.getMetricId().getValueTime().getTime()));
 			ps.setDouble(3, metricData.getValue());
-			ps.setDouble(4, metricData.getResourceId());
+			ps.setDouble(4, metricData.getResourceId() != null ? metricData.getResourceId() : null);
 			DatabaseManager databaseManager = new DatabaseManager();
 			return databaseManager.execute(ps);
 		} catch (SQLException e) {

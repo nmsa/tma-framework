@@ -30,16 +30,6 @@ public abstract class MetricAttributeView implements Serializable {
 	private int metricId;
 
 	private String name;
-
-//	//bi-directional one-to-many association to Historicaldata
-//	@OneToMany (mappedBy="metric", fetch = FetchType.LAZY)
-//	private List<MetricData> metricData;
-	
-//	//bi-directional many-to-one association to Preference
-//	@OneToMany(mappedBy="metric", fetch = FetchType.EAGER)
-//	@Fetch(FetchMode.SUBSELECT)
-//	@LazyCollection(LazyCollectionOption.FALSE)
-//	private Set<Preference> preferences;
 	
 	//bi-directional many-to-one association to compositeattribute
 	@ManyToOne
@@ -67,14 +57,6 @@ public abstract class MetricAttributeView implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-
-//	public Set<Preference> getPreferences() {
-//		return preferences;
-//	}
-//
-//	public void setPreferences(Set<Preference> preferences) {
-//		this.preferences = preferences;
-//	}
 
 	public CompositeAttributeView getCompositeattribute() {
 		return compositeattribute;

@@ -7,6 +7,8 @@ public class TrustworthinessScore implements Score {
     private PerformanceScore performanceScore;
     private Integer podCount;
     private long timestamp;
+    private int metricId;
+    private long valueTime;
     
     public TrustworthinessScore(ResourceConsumptionScore resourceConsumptionPodScore, 
             PerformanceScore performanceScore) {
@@ -69,13 +71,19 @@ public class TrustworthinessScore implements Score {
 
 	@Override
 	public long getValueTime() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.valueTime;
 	}
 
+	public void setValueTime(long valueTime) {
+		this.valueTime = valueTime;
+	}
+	
 	@Override
 	public int getMetricId() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.metricId;
+	}
+
+	public void setMetricId(int metricId) {
+		this.metricId = metricId;
 	}
 }

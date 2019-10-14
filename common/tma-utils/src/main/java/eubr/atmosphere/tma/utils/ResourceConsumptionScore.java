@@ -15,6 +15,8 @@ public class ResourceConsumptionScore implements Score {
     private Double cpuNode;
     private Double memoryNode;
     private Double score;
+    private int metricId;
+    private long valueTime;
 
     public Double getCpuPod() {
         return cpuPod;
@@ -82,13 +84,19 @@ public class ResourceConsumptionScore implements Score {
 
 	@Override
 	public long getValueTime() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.valueTime;
 	}
 
+	public void setValueTime(long valueTime) {
+		this.valueTime = valueTime;
+	}
+	
 	@Override
 	public int getMetricId() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.metricId;
+	}
+
+	public void setMetricId(int metricId) {
+		this.metricId = metricId;
 	}
 }

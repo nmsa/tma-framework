@@ -16,6 +16,8 @@ public class PerformanceScore implements Score {
     private Double responseTime;
     private Double demand;
     private Double rateRequestUnderContracted;
+    private int metricId;
+    private long valueTime;
 
     public PerformanceScore() {
         super();
@@ -89,13 +91,19 @@ public class PerformanceScore implements Score {
 
 	@Override
 	public long getValueTime() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.valueTime;
 	}
 
+	public void setValueTime(long valueTime) {
+		this.valueTime = valueTime;
+	}
+	
 	@Override
 	public int getMetricId() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.metricId;
+	}
+
+	public void setMetricId(int metricId) {
+		this.metricId = metricId;
 	}
 }

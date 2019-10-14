@@ -79,4 +79,16 @@ public class ResourceConsumptionScore implements Score {
          return this.getCpuNode()!= null && this.getCpuPod()!= null &&
                  this.getMemoryNode()!= null && this.getMemoryPod()!= null;
     }
+
+	@Override
+	public long getValueTime() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getMetricId() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

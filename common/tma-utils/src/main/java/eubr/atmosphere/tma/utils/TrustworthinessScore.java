@@ -66,4 +66,16 @@ public class TrustworthinessScore implements Score {
     public PerformanceScore getPerformanceScore() {
         return this.performanceScore;
     }
+
+	@Override
+	public long getValueTime() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getMetricId() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

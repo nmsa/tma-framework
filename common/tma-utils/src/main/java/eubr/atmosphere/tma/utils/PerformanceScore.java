@@ -86,4 +86,16 @@ public class PerformanceScore implements Score {
         
         return this.score;
     }
+
+	@Override
+	public long getValueTime() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getMetricId() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

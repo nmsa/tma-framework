@@ -1,10 +1,11 @@
 package eubr.atmosphere.tma.database;
 
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,9 +26,13 @@ public class QualityModelManager {
 		try {
 			ps = DatabaseManager.getConnectionInstance().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			ps.setInt(1, metricData.getMetricId().getMetricId());
-			ps.setDate(2, new Date(metricData.getMetricId().getValueTime().getTime()));
+			ps.setTimestamp(2, new Timestamp(metricData.getMetricId().getValueTime().getTime()));
 			ps.setDouble(3, metricData.getValue());
-			ps.setDouble(4, metricData.getResourceId() != null ? metricData.getResourceId() : null);
+			if (metricData.getResourceId() == null) {
+				ps.setNull(4, Types.INTEGER);
+			} else {
+				ps.setInt(4, metricData.getResourceId());
+			}
 			DatabaseManager databaseManager = new DatabaseManager();
 			return databaseManager.execute(ps);
 		} catch (SQLException e) {

@@ -45,7 +45,7 @@ public class CompositeAttributeView extends MetricAttributeView implements Seria
 	public CompositeAttributeView() {
 	}
 	
-	public MetricData calculate(ConfigurationProfile profile) throws UndefinedException {
+	public MetricData calculate(ConfigurationProfile profile, Timestamp timestamp) throws UndefinedException {
 		
 		if (profile == null || ListUtils.isEmpty(profile.getPreferences())) {
 			throw new UndefinedMetricException(
@@ -57,22 +57,23 @@ public class CompositeAttributeView extends MetricAttributeView implements Seria
 		
 		switch (attributeAggregationOperator) {
 		case NEUTRALITY:
-			metricData.setValue(calculateNeutrality(profile));
+			metricData.setValue(calculateNeutrality(profile, timestamp));
 			break;
 		case REPLACEABILITY:
-			metricData.setValue(calculateReplaceability(profile));
+			metricData.setValue(calculateReplaceability(profile, timestamp));
 			break;
 		case SIMULTANEITY:
-			metricData.setValue(calculateSimultaneity(profile));
+			metricData.setValue(calculateSimultaneity(profile, timestamp));
 			break;
 		default:
 			throw new UnsupportedOperationException();
 		}
 
 		MetricDataPK metricDataPK = new MetricDataPK();
-		metricDataPK.setValueTime(new Timestamp(System.currentTimeMillis()));
+		metricDataPK.setValueTime(timestamp);
 		metricDataPK.setMetricId(this.getId());
 		metricData.setMetricId(metricDataPK);
+		metricData.setResourceId(null);
 		
 		// Stores calculated score in MetricData
 		QualityModelManager qmm = new QualityModelManager();
@@ -81,14 +82,14 @@ public class CompositeAttributeView extends MetricAttributeView implements Seria
 		return metricData;
 	}
 
-	protected double calculateNeutrality(ConfigurationProfile profile) throws UndefinedException {
+	protected double calculateNeutrality(ConfigurationProfile profile, Timestamp timestamp) throws UndefinedException {
 		double score = 0.0;
 		if (ListUtils.isNotEmpty(children)) {
 			for (MetricAttributeView child : children) {
 				if (!child.equals(this)) {
 					Preference childPref = profile.getPreference(child);
 					try {
-						score += child.calculate(profile).getValue() * childPref.getWeight();
+						score += child.calculate(profile, timestamp).getValue() * childPref.getWeight();
 					} catch (UndefinedMetricException e) {
 						e.printStackTrace();
 					}
@@ -98,14 +99,14 @@ public class CompositeAttributeView extends MetricAttributeView implements Seria
 		return score;
 	}
 
-	protected double calculateSimultaneity(ConfigurationProfile profile) throws UndefinedException {
+	protected double calculateSimultaneity(ConfigurationProfile profile, Timestamp timestamp) throws UndefinedException {
 		double score = 0.0;
 		if (ListUtils.isNotEmpty(this.children)) {
 			for (MetricAttributeView child : children) {
 				if (!child.equals(this)) {
 					Preference childPref = profile.getPreference(child);
 					try {
-						double scoreAux = child.calculate(profile).getValue() * childPref.getWeight();
+						double scoreAux = child.calculate(profile, timestamp).getValue() * childPref.getWeight();
 						if (scoreAux < childPref.getThreshold()) {
 							score = 0.0;
 							break;
@@ -120,14 +121,14 @@ public class CompositeAttributeView extends MetricAttributeView implements Seria
 		return score;
 	}
 
-	protected double calculateReplaceability(ConfigurationProfile profile) throws UndefinedException {
+	protected double calculateReplaceability(ConfigurationProfile profile, Timestamp timestamp) throws UndefinedException {
 		double score = 0.0;
 		if (ListUtils.isNotEmpty(this.children)) {
 			for (MetricAttributeView child : children) {
 				if (!child.equals(this)) {
 					Preference childPref = profile.getPreference(child);
 					try {
-						double scoreAux = child.calculate(profile).getValue() * childPref.getWeight();
+						double scoreAux = child.calculate(profile, timestamp).getValue() * childPref.getWeight();
 						if (scoreAux > childPref.getThreshold()) {
 							score += scoreAux;
 						}

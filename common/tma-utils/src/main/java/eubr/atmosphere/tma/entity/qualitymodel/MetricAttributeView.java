@@ -1,6 +1,7 @@
 package eubr.atmosphere.tma.entity.qualitymodel;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -36,7 +37,7 @@ public abstract class MetricAttributeView implements Serializable {
 	@JoinColumn(name="compositeattributeId")
 	private CompositeAttributeView compositeattribute;
 	
-	public abstract MetricData calculate(ConfigurationProfile user)
+	public abstract MetricData calculate(ConfigurationProfile user, Timestamp timestamp)
 			throws UndefinedException;
 	
 	public MetricAttributeView() {

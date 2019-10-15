@@ -56,7 +56,7 @@ public class LeafAttribute extends MetricAttributeView implements Serializable {
 		this.numSamples = numSamples;
 	}
 
-	public MetricData calculate(ConfigurationProfile profile)
+	public MetricData calculate(ConfigurationProfile profile, Timestamp timestamp)
 			throws UndefinedMetricException {
 
 		if (profile == null || ListUtils.isEmpty(profile.getPreferences())) {
@@ -84,7 +84,7 @@ public class LeafAttribute extends MetricAttributeView implements Serializable {
 		}
 		
 		MetricDataPK metricDataPK = new MetricDataPK();
-		metricDataPK.setValueTime(new Timestamp(System.currentTimeMillis()));
+		metricDataPK.setValueTime(timestamp);
 		metricDataPK.setMetricId(this.getId());
 		metricData.setMetricId(metricDataPK);
 		

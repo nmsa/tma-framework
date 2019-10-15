@@ -6,5 +6,7 @@ public interface Score {
     
     public long getValueTime();
     
+    public int getResourceId();
+    
     public int getMetricId();
 }

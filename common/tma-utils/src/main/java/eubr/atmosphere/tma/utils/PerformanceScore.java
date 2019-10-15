@@ -17,6 +17,7 @@ public class PerformanceScore implements Score {
     private Double demand;
     private Double rateRequestUnderContracted;
     private int metricId;
+    private int resourceId;
     private long valueTime;
 
     public PerformanceScore() {
@@ -96,6 +97,15 @@ public class PerformanceScore implements Score {
 
 	public void setValueTime(long valueTime) {
 		this.valueTime = valueTime;
+	}
+
+	@Override
+	public int getResourceId() {
+		return this.resourceId;
+	}
+
+	public void setResourceId(int resourceId) {
+		this.resourceId = resourceId;
 	}
 	
 	@Override

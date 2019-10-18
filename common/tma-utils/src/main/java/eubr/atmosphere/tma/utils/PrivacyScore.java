@@ -11,6 +11,9 @@ public class PrivacyScore implements Score {
 	private Integer configurationProfileId;
 	private Integer attributeId;
 	private Double threshold;
+    private int metricId;
+    private int resourceId;
+    private long valueTime;
 
 	public PrivacyScore(Integer configurationProfileId, Integer attributeId, Double score, Double threshold) {
 		super();
@@ -52,5 +55,31 @@ public class PrivacyScore implements Score {
 	public void setThreshold(Double threshold) {
 		this.threshold = threshold;
 	}
+
+	@Override
+	public long getValueTime() {
+		return this.valueTime;
+	}
+
+	public void setValueTime(long valueTime) {
+		this.valueTime = valueTime;
+	}
+
+	@Override
+	public int getResourceId() {
+		return this.resourceId;
+	}
+
+	public void setResourceId(int resourceId) {
+		this.resourceId = resourceId;
+	}
 	
+	@Override
+	public int getMetricId() {
+		return this.metricId;
+	}
+
+	public void setMetricId(int metricId) {
+		this.metricId = metricId;
+	}
 }

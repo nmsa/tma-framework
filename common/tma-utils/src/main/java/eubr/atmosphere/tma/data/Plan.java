@@ -25,7 +25,6 @@ public class Plan {
     
     private Integer planId;
     private int metricId;
-    private int qualityModelId;
     private long valueTime;
     private STATUS status; // TODO: define the possible status in a enum
     private List<ActionPlan> actionList;
@@ -49,14 +48,6 @@ public class Plan {
 
     public void setMetricId(int metricId) {
         this.metricId = metricId;
-    }
-
-    public int getQualityModelId() {
-        return qualityModelId;
-    }
-
-    public void setQualityModelId(int qualityModelId) {
-        this.qualityModelId = qualityModelId;
     }
 
     public STATUS getStatus() {

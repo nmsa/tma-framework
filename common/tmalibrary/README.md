@@ -1,14 +1,13 @@
 # tmalibrary
 
-Class files to be used during the development of `TMA Monitor` probes developed in `Python`.
+Class files to be used during the development of probes and actuators developed in `Python`.
 
 
 ## Prerequisites
 
-To use this library, you need to install `requests` and `tmalibrary` module. To install these modules, you need to execute the following commands:
+To use this library, you need to install `tmalibrary` module. To install this module, you need to execute the following command:
 
 ```sh
-pip install requests
 pip install tmalibrary
 ```
 
@@ -18,6 +17,12 @@ To use this library in the development of your probe, you need to include the fo
 
 ```python
 from tmalibrary.probes import *
+```
+
+To use this library in the development of your actuator, you need to include the following line in your probe main file, using the code below.
+
+```python
+from tmalibrary.actuator import *
 ```
 
 **Note**: To upload a new version of this library, the [INSTRUCTIONS.md](INSTRUCTIONS.md) file has all instructions needed.

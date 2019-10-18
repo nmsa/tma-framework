@@ -7,7 +7,9 @@ public class TrustworthinessScore implements Score {
     private PerformanceScore performanceScore;
     private PrivacyScore privacyScore;
     private Integer podCount;
-    private long timestamp;
+    private int metricId;
+    private int resourceId;
+    private long valueTime;
     
     public TrustworthinessScore() {}
     
@@ -28,7 +30,7 @@ public class TrustworthinessScore implements Score {
                 + ", performanceScore=" + performanceScore
                 + ", privacyScore=" + privacyScore
                 + ", podCount=" + podCount
-                + ", timestamp=" + timestamp
+                + ", valueTime=" + valueTime
                 + "]";
     }
 
@@ -56,14 +58,6 @@ public class TrustworthinessScore implements Score {
         this.podCount = podCount;
     }
 
-    public long getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
-    }
-
     public ResourceConsumptionScore getResourceConsumptionScore() {
         return this.resourceConsumptionScore;
     }
@@ -79,5 +73,31 @@ public class TrustworthinessScore implements Score {
 	public void setPrivacyScore(PrivacyScore privacyScore) {
 		this.privacyScore = privacyScore;
 	}
-    
+
+	@Override
+	public long getValueTime() {
+		return this.valueTime;
+	}
+
+	public void setValueTime(long valueTime) {
+		this.valueTime = valueTime;
+	}
+
+	@Override
+	public int getResourceId() {
+		return this.resourceId;
+	}
+
+	public void setResourceId(int resourceId) {
+		this.resourceId = resourceId;
+	}
+	
+	@Override
+	public int getMetricId() {
+		return this.metricId;
+	}
+
+	public void setMetricId(int metricId) {
+		this.metricId = metricId;
+	}
 }

@@ -78,6 +78,29 @@ public class DatabaseManager {
         return rs;
     }
 
+    public int execute(PreparedStatement ps) {
+        int key = -1;
+        try {
+            ps.execute();
+            ResultSet generatedKeys = ps.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                key = generatedKeys.getInt(1);
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage());
+        }
+        return key;
+    }
+
+    public int[] executeBatch(PreparedStatement ps) {
+        try {
+            return ps.executeBatch();
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage());
+        }
+        return null;
+    }
+
     public void close() {
         try {
             if (resultSet != null) {
@@ -94,19 +117,5 @@ public class DatabaseManager {
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
         }
-    }
-
-    public int execute(PreparedStatement ps) {
-        int key = -1;
-        try {
-            ps.execute();
-            ResultSet generatedKeys = ps.getGeneratedKeys();
-            if (generatedKeys.next()) {
-                key = generatedKeys.getInt(1);
-            }
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
-        }
-        return key;
     }
 }

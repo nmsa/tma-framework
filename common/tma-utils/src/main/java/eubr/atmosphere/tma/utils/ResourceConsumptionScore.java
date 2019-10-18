@@ -15,6 +15,9 @@ public class ResourceConsumptionScore implements Score {
     private Double cpuNode;
     private Double memoryNode;
     private Double score;
+    private int metricId;
+    private int resourceId;
+    private long valueTime;
 
     public Double getCpuPod() {
         return cpuPod;
@@ -79,4 +82,31 @@ public class ResourceConsumptionScore implements Score {
          return this.getCpuNode()!= null && this.getCpuPod()!= null &&
                  this.getMemoryNode()!= null && this.getMemoryPod()!= null;
     }
+
+	@Override
+	public long getValueTime() {
+		return this.valueTime;
+	}
+
+	public void setValueTime(long valueTime) {
+		this.valueTime = valueTime;
+	}
+
+	@Override
+	public int getResourceId() {
+		return this.resourceId;
+	}
+
+	public void setResourceId(int resourceId) {
+		this.resourceId = resourceId;
+	}
+	
+	@Override
+	public int getMetricId() {
+		return this.metricId;
+	}
+
+	public void setMetricId(int metricId) {
+		this.metricId = metricId;
+	}
 }

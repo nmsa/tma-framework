@@ -20,15 +20,15 @@ public class SecurityScore implements Score {
 	// metrics used for calculation of security Score
 
 	private double complianceWithVendorBestPractices_VBP;
-	private static final int numberOfPolicies = 5;
+	private static final int numberOfPolicies = 3;
 
 	private double complianceWithIndustryDefinedConfiguration_SIC;
 
 	private double complianceWithAllSecurityStandards_SS;
-	private static final int numberOfStandards = 5;
+	private static final int numberOfStandards = 6;
 
 	private double totalSecurityPoliciesInPlace_SP;
-	private static final int numberOfTechnologies = 5;
+	private static final int numberOfTechnologies = 6;
 
 	private double totalSecurityCoverage_SC;
 

@@ -3,6 +3,9 @@ package eubr.atmosphere.tma.utils;
 public class SecurityScore implements Score {
 
 	private Double score;
+	private int metricId;
+    private int resourceId;
+    private long valueTime;
 	// Constructor of SecurityCloudEAScore
 
 	public SecurityScore() {
@@ -245,6 +248,33 @@ public class SecurityScore implements Score {
 
 	public double getConfidentialityLevel() {
 		return confidentialityLevel_C;
+	}
+
+	@Override
+	public long getValueTime() {
+		return this.valueTime;
+	}
+
+	public void setValueTime(long valueTime) {
+		this.valueTime = valueTime;
+	}
+
+	@Override
+	public int getResourceId() {
+		return this.resourceId;
+	}
+
+	public void setResourceId(int resourceId) {
+		this.resourceId = resourceId;
+	}
+	
+	@Override
+	public int getMetricId() {
+		return this.metricId;
+	}
+
+	public void setMetricId(int metricId) {
+		this.metricId = metricId;
 	}
 
 	@Override

@@ -232,7 +232,8 @@ public class SecurityScore implements Score {
 	public double getConfidentialityLevel() {
 		return confidentialityLevel_C;
 	}
-
+	
+	
 	@Override
 	public String toString() {
 		this.calculateScore();
@@ -241,6 +242,7 @@ public class SecurityScore implements Score {
 				+ this.confidentialityLevel_C + ", timestamp=" + System.currentTimeMillis() + "]";
 	}
 
+	
 	private void calculateScore() {
 		System.out.print("existenceOfBestPractice: ");
 		int bestPractices[][] = splitDigits(existenceOfBestPractice, numberOfPolicies);
@@ -365,6 +367,8 @@ public class SecurityScore implements Score {
 		
 		return digits;
 	}
+
+
 
 	
 	public int getMetircID() {

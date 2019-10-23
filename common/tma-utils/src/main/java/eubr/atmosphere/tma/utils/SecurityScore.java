@@ -5,9 +5,6 @@ import java.util.HashMap;
 public class SecurityScore implements Score {
 
 	private Double score;
-	private int metricId;
-    private int resourceId;
-    private long valueTime;
 	// Constructor of SecurityCloudEAScore
 	
 	private int metricID;
@@ -238,33 +235,6 @@ public class SecurityScore implements Score {
 	
 	
 	@Override
-	public long getValueTime() {
-		return this.valueTime;
-	}
-
-	public void setValueTime(long valueTime) {
-		this.valueTime = valueTime;
-	}
-
-	@Override
-	public int getResourceId() {
-		return this.resourceId;
-	}
-
-	public void setResourceId(int resourceId) {
-		this.resourceId = resourceId;
-	}
-	
-	@Override
-	public int getMetricId() {
-		return this.metricId;
-	}
-
-	public void setMetricId(int metricId) {
-		this.metricId = metricId;
-	}
-
-	@Override
 	public String toString() {
 		this.calculateScore();
 		return "SecurityScore [Final Score=" + this.score + ", Availability Score=" + this.availabilityLevel_A
@@ -400,23 +370,33 @@ public class SecurityScore implements Score {
 
 
 
-	
-	public int getMetircID() {
-		return this.metricID;
-	}
-	
-	public long getTimestamp() {
-		return this.timestamp;
-	}
-
-	public void setMetricId(int securitydellmetricid) {
-		this.metricID = securitydellmetricid;
+	public void setMetricId(int id) {
+		this.metricID = id;
 	}
 
 
 	public void setValueTime(long l) {
 		this.timestamp = l;
 		
+	}
+
+
+	@Override
+	public long getValueTime() {
+		return this.timestamp;
+	}
+
+
+	@Override
+	public int getResourceId() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+	@Override
+	public int getMetricId() {
+		return this.metricID;
 	}
 
 }

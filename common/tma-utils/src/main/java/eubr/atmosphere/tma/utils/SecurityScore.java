@@ -1,9 +1,15 @@
 package eubr.atmosphere.tma.utils;
 
+import java.util.HashMap;
+
 public class SecurityScore implements Score {
 
 	private Double score;
 	// Constructor of SecurityCloudEAScore
+	
+	private int metricID;
+	private long timestamp;
+	
 
 	public SecurityScore() {
 		super();
@@ -11,11 +17,11 @@ public class SecurityScore implements Score {
 	}
 
 	// information required for calculation of Security Score
-	private double existenceOfBestPractice;
-	private double existenceOfCheckAreas;
-	private double existenceOfPolicy;
-	private double existenceOfSecurityControl;
-	private double existenceOfSecurityDefnition;
+	private HashMap<Integer,Double> existenceOfBestPractice = new HashMap<Integer,Double>();
+	private HashMap<Integer,Double> existenceOfCheckAreas = new HashMap<Integer,Double>();
+	private HashMap<Integer,Double> existenceOfPolicy = new HashMap<Integer,Double>();
+	private HashMap<Integer,Double> existenceOfSecurityControl = new HashMap<Integer,Double>();
+	private HashMap<Integer,Double> existenceOfSecurityDefnition = new HashMap<Integer,Double>();
 
 	// metrics used for calculation of security Score
 
@@ -54,50 +60,30 @@ public class SecurityScore implements Score {
 
 	// getter and setters
 
-	@Override
 	public Double getScore() {
 		this.calculateScore();
 		return this.score;
 	}
 
-	public double getExistenceOfBestPractice() {
-		return existenceOfBestPractice;
+
+	public void setExistenceOfBestPractice(int resourceID, double existenceOfBestPractice) {
+		this.existenceOfBestPractice.put(resourceID, existenceOfBestPractice);
 	}
 
-	public void setExistenceOfBestPractice(double existenceOfBestPractice) {
-		this.existenceOfBestPractice = existenceOfBestPractice;
+	public void setExistenceOfCheckAreas(int resourceID, double existenceOfCheckAreas) {
+		this.existenceOfCheckAreas.put(resourceID, existenceOfCheckAreas);
 	}
 
-	public double getExistenceOfCheckAreas() {
-		return existenceOfCheckAreas;
+	public void setExistenceOfPolicy(int resourceID, double existenceOfPolicy) {
+		this.existenceOfPolicy.put(resourceID, existenceOfPolicy);
 	}
 
-	public void setExistenceOfCheckAreas(double existenceOfCheckAreas) {
-		this.existenceOfCheckAreas = existenceOfCheckAreas;
+	public void setExistenceOfSecurityControl(int resourceID, double existenceOfSecurityControl) {
+		this.existenceOfSecurityControl.put(resourceID, existenceOfSecurityControl);
 	}
 
-	public double getExistenceOfPolicy() {
-		return existenceOfPolicy;
-	}
-
-	public void setExistenceOfPolicy(double existenceOfPolicy) {
-		this.existenceOfPolicy = existenceOfPolicy;
-	}
-
-	public double getExistenceOfSecurityControl() {
-		return existenceOfSecurityControl;
-	}
-
-	public void setExistenceOfSecurityControl(double existenceOfSecurityControl) {
-		this.existenceOfSecurityControl = existenceOfSecurityControl;
-	}
-
-	public double getExistenceOfSecuritySefnition() {
-		return existenceOfSecurityDefnition;
-	}
-
-	public void setExistenceOfSecuritySefnition(double existenceOfSecurityDefnition) {
-		this.existenceOfSecurityDefnition = existenceOfSecurityDefnition;
+	public void setExistenceOfSecuritySefnition(int resourceID, double existenceOfSecurityDefnition) {
+		this.existenceOfSecurityDefnition.put(resourceID, existenceOfSecurityDefnition);
 	}
 
 
@@ -256,10 +242,15 @@ public class SecurityScore implements Score {
 	}
 
 	private void calculateScore() {
+		System.out.print("existenceOfBestPractice: ");
 		int bestPractices[][] = splitDigits(existenceOfBestPractice, numberOfPolicies);
+		System.out.print("existenceOfSecurityDefnition: ");
 		int securityDefinitions[][] = splitDigits(existenceOfSecurityDefnition, numberOfPolicies);
+		System.out.print("existenceOfCheckAreas: ");
 		int checkAreas[][] = splitDigits(existenceOfCheckAreas, numberOfStandards);
+		System.out.print("existenceOfPolicy: ");
 		int policies[][] = splitDigits(existenceOfPolicy, numberOfTechnologies);
+		System.out.print("existenceOfSecurityControl: ");
 		int securityControls[][] = splitDigits(existenceOfSecurityControl, numberOfTechnologies);
 
 		// calculate complianceWithVendorBestPractices_VBP
@@ -333,23 +324,65 @@ public class SecurityScore implements Score {
 		return weights;
 	}
 
-	private static int[][] splitDigits(double num, int numberOfPolicies) {
-		long number = (long) num;
-		int length = String.valueOf(number).length()-1;
-		System.out.println(number + " " + length);
-		int[][] digits = new int[numberOfPolicies][length / numberOfPolicies];
-		int l = 0;
-		int nop = 0;
-		while (number > 1) {
-			digits[nop][l++] = (int) (number % 10);
-			number = number / 10;
+//	private static int[][] splitDigits(double num, int numberOfPolicies) {
+//		long number = (long) num;
+//		int length = String.valueOf(number).length()-1;
+//		System.out.println(number + " " + length);
+//		int[][] digits = new int[numberOfPolicies][length / numberOfPolicies];
+//		int l = 0;
+//		int nop = 0;
+//		while (number > 1) {
+//			digits[nop][l++] = (int) (number % 10);
+//			number = number / 10;
+//
+//			if (l == length / numberOfPolicies) {
+//				l = 0;
+//				nop++;
+//			}
+//		}
+//		return digits;
+//	}
+	
+	
+	private static int[][] splitDigits(HashMap<Integer, Double> values, int numberOfAttributes) {
 
-			if (l == length / numberOfPolicies) {
-				l = 0;
-				nop++;
+		int numberOfSubAatributes = values.size();
+		System.out.println(numberOfAttributes + " " + numberOfSubAatributes);
+		
+		int[][] digits = new int[numberOfAttributes][numberOfSubAatributes];
+		
+		
+		int subAttributeCounter = 0;
+		for (Double val:values.values()) {
+			for(int i=0;i<numberOfAttributes;i++) {
+				digits[i][subAttributeCounter] = (int) (val%10.0);
+				val=val/10.0;
+				System.out.print(digits[i][subAttributeCounter] + " ");
 			}
+			System.out.println();
+			subAttributeCounter ++;
 		}
+		
 		return digits;
+	}
+
+	
+	public int getMetircID() {
+		return this.metricID;
+	}
+	
+	public long getTimestamp() {
+		return this.timestamp;
+	}
+
+	public void setMetricId(int securitydellmetricid) {
+		this.metricID = securitydellmetricid;
+	}
+
+
+	public void setValueTime(long l) {
+		this.timestamp = l;
+		
 	}
 
 }

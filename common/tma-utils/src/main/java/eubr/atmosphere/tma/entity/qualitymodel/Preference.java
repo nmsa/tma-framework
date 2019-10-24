@@ -63,14 +63,6 @@ public class Preference implements Serializable {
 		this.weight = weight;
 	}
 
-//	public MetricAttributeView getMetric() {
-//		return metric;
-//	}
-//
-//	public void setMetric(MetricAttributeView metric) {
-//		this.metric = metric;
-//	}
-
 	public ConfigurationProfile getConfigurationprofile() {
 		return configurationprofile;
 	}

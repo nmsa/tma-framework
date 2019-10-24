@@ -25,11 +25,6 @@ public class Preference implements Serializable {
 	private double threshold;
 
 	private double weight;
-
-//	//bi-directional one-to-one association to Attribute
-//	@ManyToOne
-//	@JoinColumn(name="metricId")
-//	private MetricAttributeView metric;
 	
 	//bi-directional many-to-one association to ConfigurationProfile
 	@ManyToOne

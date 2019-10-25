@@ -2,26 +2,36 @@ package eubr.atmosphere.tma.utils;
 
 import java.util.HashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class SecurityScore implements Score {
 
-	private Double score;
-	// Constructor of SecurityCloudEAScore
-	
-	private int metricID;
-	private long timestamp;
-	
+	private static final Logger LOGGER = LoggerFactory.getLogger(SecurityScore.class);
 
+	private Double score;
+	private int resourceId;
+	private long timestamp;
+	private int metricId;
+
+	// Constructor of SecurityScore
 	public SecurityScore() {
 		super();
-		// initialization of this class variables
 	}
 
-	// information required for calculation of Security Score
-	private HashMap<Integer,Double> existenceOfBestPractice = new HashMap<Integer,Double>();
-	private HashMap<Integer,Double> existenceOfCheckAreas = new HashMap<Integer,Double>();
-	private HashMap<Integer,Double> existenceOfPolicy = new HashMap<Integer,Double>();
-	private HashMap<Integer,Double> existenceOfSecurityControl = new HashMap<Integer,Double>();
-	private HashMap<Integer,Double> existenceOfSecurityDefnition = new HashMap<Integer,Double>();
+	/**
+	 * The following HashMaps store data required for calculation of Security Score.
+	 * each HashMap maps desscriptionId with a value. It stores the values for
+	 * several descriptions whose values are required for calculating one specific
+	 * metric. As an example, existenceOfBestPractice stores the values for
+	 * existence of best practices within each policy in order to be used for
+	 * calculating Compliance with Vendor Best Practices (VBP).
+	 */
+	private HashMap<Integer, Double> existenceOfBestPractice = new HashMap<Integer, Double>();
+	private HashMap<Integer, Double> existenceOfCheckAreas = new HashMap<Integer, Double>();
+	private HashMap<Integer, Double> existenceOfPolicy = new HashMap<Integer, Double>();
+	private HashMap<Integer, Double> existenceOfSecurityControl = new HashMap<Integer, Double>();
+	private HashMap<Integer, Double> existenceOfSecurityDefnition = new HashMap<Integer, Double>();
 
 	// metrics used for calculation of security Score
 
@@ -43,6 +53,7 @@ public class SecurityScore implements Score {
 	private double confidentialityLevel_C;
 
 	///////////////////////// weights of attributes and sub-attributes
+
 	private double[] S_AttributesWeights;
 	private double[] A_AttributesWeights;
 	private double[] I_AttributesWeights;
@@ -61,31 +72,31 @@ public class SecurityScore implements Score {
 	// getter and setters
 
 	public Double getScore() {
-		this.calculateScore();
+		// verifies whether is score has already been calculated or not.
+		if (this.score == null)
+			this.calculateScore();
 		return this.score;
 	}
 
-
-	public void setExistenceOfBestPractice(int resourceID, double existenceOfBestPractice) {
-		this.existenceOfBestPractice.put(resourceID, existenceOfBestPractice);
+	public void setExistenceOfBestPractice(int descriptionID, double existenceOfBestPractice) {
+		this.existenceOfBestPractice.put(descriptionID, existenceOfBestPractice);
 	}
 
-	public void setExistenceOfCheckAreas(int resourceID, double existenceOfCheckAreas) {
-		this.existenceOfCheckAreas.put(resourceID, existenceOfCheckAreas);
+	public void setExistenceOfCheckAreas(int descriptionID, double existenceOfCheckAreas) {
+		this.existenceOfCheckAreas.put(descriptionID, existenceOfCheckAreas);
 	}
 
-	public void setExistenceOfPolicy(int resourceID, double existenceOfPolicy) {
-		this.existenceOfPolicy.put(resourceID, existenceOfPolicy);
+	public void setExistenceOfPolicy(int descriptionID, double existenceOfPolicy) {
+		this.existenceOfPolicy.put(descriptionID, existenceOfPolicy);
 	}
 
-	public void setExistenceOfSecurityControl(int resourceID, double existenceOfSecurityControl) {
-		this.existenceOfSecurityControl.put(resourceID, existenceOfSecurityControl);
+	public void setExistenceOfSecurityControl(int descriptionID, double existenceOfSecurityControl) {
+		this.existenceOfSecurityControl.put(descriptionID, existenceOfSecurityControl);
 	}
 
-	public void setExistenceOfSecuritySefnition(int resourceID, double existenceOfSecurityDefnition) {
-		this.existenceOfSecurityDefnition.put(resourceID, existenceOfSecurityDefnition);
+	public void setExistenceOfSecurityDefnition(int descriptionID, double existenceOfSecurityDefnition) {
+		this.existenceOfSecurityDefnition.put(descriptionID, existenceOfSecurityDefnition);
 	}
-
 
 	//////// setters and getters for attributes weights
 	public double[] getS_AttributesWeights() {
@@ -232,8 +243,7 @@ public class SecurityScore implements Score {
 	public double getConfidentialityLevel() {
 		return confidentialityLevel_C;
 	}
-	
-	
+
 	@Override
 	public String toString() {
 		this.calculateScore();
@@ -242,38 +252,53 @@ public class SecurityScore implements Score {
 				+ this.confidentialityLevel_C + ", timestamp=" + System.currentTimeMillis() + "]";
 	}
 
-	
+	/**
+	 * This methods calculates the security score using the data, collected from
+	 * each resource, regarding the attributes and sub-attributes are involved in
+	 * the calculation of the score. There are several metrics and sub-metrics
+	 * involved in the calculation of the score that have to be calculated before
+	 * the score is calculated.
+	 */
 	private void calculateScore() {
-		System.out.print("existenceOfBestPractice: ");
+		// verifies whether all data required are provided or not
+		if (existenceOfBestPractice.isEmpty() || existenceOfSecurityDefnition.isEmpty()
+				|| existenceOfCheckAreas.isEmpty() || existenceOfPolicy.isEmpty()
+				|| existenceOfSecurityControl.isEmpty()) {
+
+			LOGGER.info("Some data is missing for calculation of the score!");
+			return;
+		}
+
 		int bestPractices[][] = splitDigits(existenceOfBestPractice, numberOfPolicies);
-		System.out.print("existenceOfSecurityDefnition: ");
 		int securityDefinitions[][] = splitDigits(existenceOfSecurityDefnition, numberOfPolicies);
-		System.out.print("existenceOfCheckAreas: ");
 		int checkAreas[][] = splitDigits(existenceOfCheckAreas, numberOfStandards);
-		System.out.print("existenceOfPolicy: ");
 		int policies[][] = splitDigits(existenceOfPolicy, numberOfTechnologies);
-		System.out.print("existenceOfSecurityControl: ");
 		int securityControls[][] = splitDigits(existenceOfSecurityControl, numberOfTechnologies);
 
 		// calculate complianceWithVendorBestPractices_VBP
-		this.complianceWithVendorBestPractices_VBP = calculateMetric(numberOfPolicies,bestPractices, this.VBPP_AttributesWeights, this.VBP_AttributesWeights);
-		
+		this.complianceWithVendorBestPractices_VBP = calculateMetric(numberOfPolicies, bestPractices,
+				this.VBPP_AttributesWeights, this.VBP_AttributesWeights);
+
 		// calculate complianceWithIndustryDefinedConfiguration_SIC
-		this.complianceWithIndustryDefinedConfiguration_SIC = calculateMetric(numberOfPolicies,securityDefinitions, this.SICP_AttributesWeights, this.SIC_AttributesWeights);
+		this.complianceWithIndustryDefinedConfiguration_SIC = calculateMetric(numberOfPolicies, securityDefinitions,
+				this.SICP_AttributesWeights, this.SIC_AttributesWeights);
 
 		// calculate complianceWithAllSecurityStandards_SS
-		this.complianceWithAllSecurityStandards_SS= calculateMetric(numberOfStandards,checkAreas,this.CSS_AttributesWeiths,this.SS_AttributesWeights);
+		this.complianceWithAllSecurityStandards_SS = calculateMetric(numberOfStandards, checkAreas,
+				this.CSS_AttributesWeiths, this.SS_AttributesWeights);
 
 		// calculate totalSecurityPoliciesInPlace_SP
-		this.totalSecurityPoliciesInPlace_SP = calculateMetric(numberOfTechnologies, policies, this.P_AttributesWeights, this.SP_AttributesWeights);
+		this.totalSecurityPoliciesInPlace_SP = calculateMetric(numberOfTechnologies, policies, this.P_AttributesWeights,
+				this.SP_AttributesWeights);
 
 		// calculate totalSecurityCoverage_SC
-		this.totalSecurityCoverage_SC = calculateMetric(numberOfTechnologies,securityControls,this.SCT_AttributesWeights,this.SC_AttributesWeights);
+		this.totalSecurityCoverage_SC = calculateMetric(numberOfTechnologies, securityControls,
+				this.SCT_AttributesWeights, this.SC_AttributesWeights);
 
 		// calculate availabilityLevel_A
 		if (this.A_AttributesWeights == null)
-			this.A_AttributesWeights  = setDefaultWeights(3);
-		
+			this.A_AttributesWeights = setDefaultWeights(3);
+
 		this.availabilityLevel_A = this.totalSecurityCoverage_SC * this.A_AttributesWeights[0]
 				+ this.complianceWithIndustryDefinedConfiguration_SIC * this.A_AttributesWeights[1]
 				+ this.complianceWithVendorBestPractices_VBP * this.A_AttributesWeights[2];
@@ -283,120 +308,105 @@ public class SecurityScore implements Score {
 
 		// calculate confidentialityLevel_C;
 		if (this.C_AttributesWeights == null)
-			this.C_AttributesWeights  = setDefaultWeights(2);
-		
+			this.C_AttributesWeights = setDefaultWeights(2);
+
 		this.confidentialityLevel_C = this.totalSecurityCoverage_SC * this.C_AttributesWeights[0]
 				+ this.totalSecurityPoliciesInPlace_SP * this.C_AttributesWeights[1];
 
 		// calculate final score
 		if (this.S_AttributesWeights == null)
-			this.S_AttributesWeights  = setDefaultWeights(3);
-		
+			this.S_AttributesWeights = setDefaultWeights(3);
+
 		this.score = this.availabilityLevel_A * S_AttributesWeights[0] + this.integrityLevel_I * S_AttributesWeights[1]
 				+ this.confidentialityLevel_C * S_AttributesWeights[2];
 	}
-	
+
+	/**
+	 * This method calculates the value of each metric that is required for
+	 * calculation of score. To do so, the values of attributes and sub-attributes
+	 */
 	private double calculateMetric(int numOfAttributes, int[][] ArrtibutesValues, double[] SubAttributesWeights,
 			double[] AttributesWeights) {
-		
+
 		if (SubAttributesWeights == null)
 			SubAttributesWeights = setDefaultWeights(ArrtibutesValues[0].length);
-		if(AttributesWeights == null)
+		if (AttributesWeights == null)
 			AttributesWeights = setDefaultWeights(numOfAttributes);
-		
+
 		double metric = 0.0;
 		double[] subattribute = new double[numOfAttributes];
 		for (int i = 0; i < numOfAttributes; i++) {
 			for (int j = 0; j < ArrtibutesValues[i].length; j++)
-				subattribute[i] += ArrtibutesValues[i][j]
-						* SubAttributesWeights[j];
+				subattribute[i] += ArrtibutesValues[i][j] * SubAttributesWeights[j];
 
-			metric += subattribute[i]
-					* AttributesWeights[i];
+			metric += subattribute[i] * AttributesWeights[i];
 		}
-		
+
 		return metric;
 	}
 
+	/**
+	 * In the case no weight has been assigned to the attributes and sub-attributes,
+	 * an equal weight is assigned to each.
+	 */
 	private double[] setDefaultWeights(int numOfAtt) {
 		double[] weights = new double[numOfAtt];
-		double w = 1.0/numOfAtt;
-		for (int i=0; i<numOfAtt;i++)
-			weights[i]=w;
+		double w = 1.0 / numOfAtt;
+		for (int i = 0; i < numOfAtt; i++)
+			weights[i] = w;
 		return weights;
 	}
 
-//	private static int[][] splitDigits(double num, int numberOfPolicies) {
-//		long number = (long) num;
-//		int length = String.valueOf(number).length()-1;
-//		System.out.println(number + " " + length);
-//		int[][] digits = new int[numberOfPolicies][length / numberOfPolicies];
-//		int l = 0;
-//		int nop = 0;
-//		while (number > 1) {
-//			digits[nop][l++] = (int) (number % 10);
-//			number = number / 10;
-//
-//			if (l == length / numberOfPolicies) {
-//				l = 0;
-//				nop++;
-//			}
-//		}
-//		return digits;
-//	}
-	
-	
+	/**
+	 * This method is responsible for splitting the value provided for each
+	 * description that includes collected data for several attributes. For
+	 * instance, existence of security definition x is a description whose value
+	 * represents the existence of this security definition in various technologies
+	 * (which are attributes) in a sequence of 0/1.
+	 */
 	private static int[][] splitDigits(HashMap<Integer, Double> values, int numberOfAttributes) {
 
 		int numberOfSubAatributes = values.size();
-		System.out.println(numberOfAttributes + " " + numberOfSubAatributes);
-		
 		int[][] digits = new int[numberOfAttributes][numberOfSubAatributes];
-		
-		
+
 		int subAttributeCounter = 0;
-		for (Double val:values.values()) {
-			for(int i=0;i<numberOfAttributes;i++) {
-				digits[i][subAttributeCounter] = (int) (val%10.0);
-				val=val/10.0;
-				System.out.print(digits[i][subAttributeCounter] + " ");
+		for (Double val : values.values()) {
+			for (int i = 0; i < numberOfAttributes; i++) {
+				digits[i][subAttributeCounter] = (int) (val % 10.0);
+				val = val / 10.0;
 			}
-			System.out.println();
-			subAttributeCounter ++;
+			subAttributeCounter++;
 		}
-		
+
 		return digits;
 	}
 
-
-
 	public void setMetricId(int id) {
-		this.metricID = id;
+		this.metricId = id;
 	}
-
 
 	public void setValueTime(long l) {
 		this.timestamp = l;
-		
+
 	}
 
+	public void setResourceId(int id) {
+		this.resourceId = id;
+	}
 
 	@Override
 	public long getValueTime() {
 		return this.timestamp;
 	}
 
-
 	@Override
 	public int getResourceId() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.resourceId;
 	}
-
 
 	@Override
 	public int getMetricId() {
-		return this.metricID;
+		return this.metricId;
 	}
 
 }

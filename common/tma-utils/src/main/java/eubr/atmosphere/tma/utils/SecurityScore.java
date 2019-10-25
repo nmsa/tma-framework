@@ -78,24 +78,24 @@ public class SecurityScore implements Score {
 		return this.score;
 	}
 
-	public void setExistenceOfBestPractice(int descriptionID, double existenceOfBestPractice) {
-		this.existenceOfBestPractice.put(descriptionID, existenceOfBestPractice);
+	public void setExistenceOfBestPractice(int resourceId, double existenceOfBestPractice) {
+		this.existenceOfBestPractice.put(resourceId, existenceOfBestPractice);
 	}
 
-	public void setExistenceOfCheckAreas(int descriptionID, double existenceOfCheckAreas) {
-		this.existenceOfCheckAreas.put(descriptionID, existenceOfCheckAreas);
+	public void setExistenceOfCheckAreas(int resourceId, double existenceOfCheckAreas) {
+		this.existenceOfCheckAreas.put(resourceId, existenceOfCheckAreas);
 	}
 
-	public void setExistenceOfPolicy(int descriptionID, double existenceOfPolicy) {
-		this.existenceOfPolicy.put(descriptionID, existenceOfPolicy);
+	public void setExistenceOfPolicy(int resourceId, double existenceOfPolicy) {
+		this.existenceOfPolicy.put(resourceId, existenceOfPolicy);
 	}
 
-	public void setExistenceOfSecurityControl(int descriptionID, double existenceOfSecurityControl) {
-		this.existenceOfSecurityControl.put(descriptionID, existenceOfSecurityControl);
+	public void setExistenceOfSecurityControl(int resourceId, double existenceOfSecurityControl) {
+		this.existenceOfSecurityControl.put(resourceId, existenceOfSecurityControl);
 	}
 
-	public void setExistenceOfSecurityDefnition(int descriptionID, double existenceOfSecurityDefnition) {
-		this.existenceOfSecurityDefnition.put(descriptionID, existenceOfSecurityDefnition);
+	public void setExistenceOfSecurityDefnition(int resourceId, double existenceOfSecurityDefnition) {
+		this.existenceOfSecurityDefnition.put(resourceId, existenceOfSecurityDefnition);
 	}
 
 	//////// setters and getters for attributes weights
@@ -254,7 +254,7 @@ public class SecurityScore implements Score {
 
 	/**
 	 * This methods calculates the security score using the data, collected from
-	 * each resource, regarding the attributes and sub-attributes are involved in
+	 * several resources, regarding the attributes and sub-attributes are involved in
 	 * the calculation of the score. There are several metrics and sub-metrics
 	 * involved in the calculation of the score that have to be calculated before
 	 * the score is calculated.
@@ -359,8 +359,8 @@ public class SecurityScore implements Score {
 
 	/**
 	 * This method is responsible for splitting the value provided for each
-	 * description that includes collected data for several attributes. For
-	 * instance, existence of security definition x is a description whose value
+	 * resource that includes collected data for several attributes. For
+	 * instance, existence of security definition x is a resource whose value
 	 * represents the existence of this security definition in various technologies
 	 * (which are attributes) in a sequence of 0/1.
 	 */

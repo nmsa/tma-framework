@@ -31,7 +31,7 @@ public class SecurityScore implements Score {
 	private HashMap<Integer, Double> existenceOfCheckAreas = new HashMap<Integer, Double>();
 	private HashMap<Integer, Double> existenceOfPolicy = new HashMap<Integer, Double>();
 	private HashMap<Integer, Double> existenceOfSecurityControl = new HashMap<Integer, Double>();
-	private HashMap<Integer, Double> existenceOfSecurityDefnition = new HashMap<Integer, Double>();
+	private HashMap<Integer, Double> existenceOfSecurityDefinition = new HashMap<Integer, Double>();
 
 	// metrics used for calculation of security Score
 
@@ -94,8 +94,8 @@ public class SecurityScore implements Score {
 		this.existenceOfSecurityControl.put(resourceId, existenceOfSecurityControl);
 	}
 
-	public void setExistenceOfSecurityDefnition(int resourceId, double existenceOfSecurityDefnition) {
-		this.existenceOfSecurityDefnition.put(resourceId, existenceOfSecurityDefnition);
+	public void setExistenceOfSecurityDefinition(int resourceId, double existenceOfSecurityDefinition) {
+		this.existenceOfSecurityDefinition.put(resourceId, existenceOfSecurityDefinition);
 	}
 
 	//////// setters and getters for attributes weights
@@ -261,7 +261,7 @@ public class SecurityScore implements Score {
 	 */
 	private void calculateScore() {
 		// verifies whether all data required are provided or not
-		if (existenceOfBestPractice.isEmpty() || existenceOfSecurityDefnition.isEmpty()
+		if (existenceOfBestPractice.isEmpty() || existenceOfSecurityDefinition.isEmpty()
 				|| existenceOfCheckAreas.isEmpty() || existenceOfPolicy.isEmpty()
 				|| existenceOfSecurityControl.isEmpty()) {
 
@@ -270,7 +270,7 @@ public class SecurityScore implements Score {
 		}
 
 		int bestPractices[][] = splitDigits(existenceOfBestPractice, numberOfPolicies);
-		int securityDefinitions[][] = splitDigits(existenceOfSecurityDefnition, numberOfPolicies);
+		int securityDefinitions[][] = splitDigits(existenceOfSecurityDefinition, numberOfPolicies);
 		int checkAreas[][] = splitDigits(existenceOfCheckAreas, numberOfStandards);
 		int policies[][] = splitDigits(existenceOfPolicy, numberOfTechnologies);
 		int securityControls[][] = splitDigits(existenceOfSecurityControl, numberOfTechnologies);

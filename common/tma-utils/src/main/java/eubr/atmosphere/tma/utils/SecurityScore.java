@@ -247,9 +247,16 @@ public class SecurityScore implements Score {
 	@Override
 	public String toString() {
 		this.calculateScore();
-		return "SecurityScore [Final Score=" + this.score + ", Availability Score=" + this.availabilityLevel_A
-				+ ", Integrity Score=" + this.integrityLevel_I + ", Confidentiality Score="
-				+ this.confidentialityLevel_C + ", timestamp=" + System.currentTimeMillis() + "]";
+		return "SecurityScore [Final Score= " + this.score 
+				+ ", Availability Score= " + this.availabilityLevel_A
+				+ ", Integrity Score= " + this.integrityLevel_I 
+				+ ", Confidentiality Score= " + this.confidentialityLevel_C 
+				+ ", Compliance With Security Standards= " + this.complianceWithAllSecurityStandards_SS
+				+ ", Compliance With Industry Defined Configuration= " + this.complianceWithIndustryDefinedConfiguration_SIC
+				+ ", Compliance With Vendor Best Practices= " + this.complianceWithVendorBestPractices_VBP
+				+ ", Total Security Coverage= " + this.totalSecurityCoverage_SC
+				+ ", Total Security Policies In Place= " + this.totalSecurityPoliciesInPlace_SP
+				+ ", timestamp=" + System.currentTimeMillis() + "]";
 	}
 
 	/**

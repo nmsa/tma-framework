@@ -7,68 +7,79 @@ package eubr.atmosphere.tma.utils;
  */
 public class PrivacyScore implements Score {
 
-	private Double score;
-	private Integer configurationProfileId;
-	private Integer attributeId;
-	private Double threshold;
+    private Double score;
+    private Integer configurationProfileId;
+    private Integer attributeId;
+    private Double threshold;
+    private int metricId;
+    private int resourceId;
+    private long valueTime;
 
-	public PrivacyScore(Integer configurationProfileId, Integer attributeId, Double score, Double threshold) {
-		super();
-		this.score = score;
-		this.configurationProfileId = configurationProfileId;
-		this.attributeId = attributeId;
-		this.threshold = threshold;
-	}
+    public PrivacyScore(Integer configurationProfileId, Integer attributeId, Double score, Double threshold) {
+        super();
+        this.score = score;
+        this.configurationProfileId = configurationProfileId;
+        this.attributeId = attributeId;
+        this.threshold = threshold;
+    }
 
-	@Override
-	public Double getScore() {
-		return this.score;
-	}
+    @Override
+    public Double getScore() {
+        return this.score;
+    }
 
-	public void setScore(Double score) {
-		this.score = score;
-	}
-	
-	public Integer getConfigurationProfileId() {
-		return configurationProfileId;
-	}
+    public void setScore(Double score) {
+        this.score = score;
+    }
 
-	public void setConfigurationProfileId(Integer configurationProfileId) {
-		this.configurationProfileId = configurationProfileId;
-	}
+    public Integer getConfigurationProfileId() {
+        return configurationProfileId;
+    }
 
-	public Integer getAttributeId() {
-		return attributeId;
-	}
+    public void setConfigurationProfileId(Integer configurationProfileId) {
+        this.configurationProfileId = configurationProfileId;
+    }
 
-	public void setAttributeId(Integer attributeId) {
-		this.attributeId = attributeId;
-	}
+    public Integer getAttributeId() {
+        return attributeId;
+    }
 
-	public Double getThreshold() {
-		return threshold;
-	}
+    public void setAttributeId(Integer attributeId) {
+        this.attributeId = attributeId;
+    }
 
-	public void setThreshold(Double threshold) {
-		this.threshold = threshold;
-	}
+    public Double getThreshold() {
+        return threshold;
+    }
 
-	@Override
-	public long getValueTime() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+    public void setThreshold(Double threshold) {
+        this.threshold = threshold;
+    }
 
-	@Override
-	public int getResourceId() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+     @Override
+     public long getValueTime() {
+         return this.valueTime;
+     }
 
-	@Override
-	public int getMetricId() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
+     public void setValueTime(long valueTime) {
+         this.valueTime = valueTime;
+     }
+
+     @Override
+     public int getResourceId() {
+         return this.resourceId;
+     }
+
+     public void setResourceId(int resourceId) {
+         this.resourceId = resourceId;
+     }
+
+     @Override
+     public int getMetricId() {
+         return this.metricId;
+     }
+
+     public void setMetricId(int metricId) {
+         this.metricId = metricId;
+     }
 }

@@ -52,5 +52,23 @@ public class PrivacyScore implements Score {
 	public void setThreshold(Double threshold) {
 		this.threshold = threshold;
 	}
+
+	@Override
+	public long getValueTime() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getResourceId() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getMetricId() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
 }

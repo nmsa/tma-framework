@@ -1,7 +1,7 @@
 package eubr.atmosphere.tma.entity.qualitymodel;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -56,7 +56,7 @@ public class LeafAttribute extends MetricAttributeView implements Serializable {
 		this.numSamples = numSamples;
 	}
 
-	public MetricData calculate(ConfigurationProfile profile, Timestamp timestamp)
+	public MetricData calculate(ConfigurationProfile profile, Date timestamp)
 			throws UndefinedMetricException {
 
 		if (profile == null || ListUtils.isEmpty(profile.getPreferences())) {

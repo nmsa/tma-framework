@@ -1,8 +1,8 @@
 package eubr.atmosphere.tma.entity.qualitymodel;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -45,7 +45,7 @@ public class CompositeAttributeView extends MetricAttributeView implements Seria
 	public CompositeAttributeView() {
 	}
 	
-	public MetricData calculate(ConfigurationProfile profile, Timestamp timestamp) throws UndefinedException {
+	public MetricData calculate(ConfigurationProfile profile, Date timestamp) throws UndefinedException {
 		
 		if (profile == null || ListUtils.isEmpty(profile.getPreferences())) {
 			throw new UndefinedMetricException(
@@ -82,7 +82,7 @@ public class CompositeAttributeView extends MetricAttributeView implements Seria
 		return metricData;
 	}
 
-	protected double calculateNeutrality(ConfigurationProfile profile, Timestamp timestamp) throws UndefinedException {
+	protected double calculateNeutrality(ConfigurationProfile profile, Date timestamp) throws UndefinedException {
 		double score = 0.0;
 		if (ListUtils.isNotEmpty(children)) {
 			for (MetricAttributeView child : children) {
@@ -99,7 +99,7 @@ public class CompositeAttributeView extends MetricAttributeView implements Seria
 		return score;
 	}
 
-	protected double calculateSimultaneity(ConfigurationProfile profile, Timestamp timestamp) throws UndefinedException {
+	protected double calculateSimultaneity(ConfigurationProfile profile, Date timestamp) throws UndefinedException {
 		double score = 0.0;
 		if (ListUtils.isNotEmpty(this.children)) {
 			for (MetricAttributeView child : children) {
@@ -121,7 +121,7 @@ public class CompositeAttributeView extends MetricAttributeView implements Seria
 		return score;
 	}
 
-	protected double calculateReplaceability(ConfigurationProfile profile, Timestamp timestamp) throws UndefinedException {
+	protected double calculateReplaceability(ConfigurationProfile profile, Date timestamp) throws UndefinedException {
 		double score = 0.0;
 		if (ListUtils.isNotEmpty(this.children)) {
 			for (MetricAttributeView child : children) {

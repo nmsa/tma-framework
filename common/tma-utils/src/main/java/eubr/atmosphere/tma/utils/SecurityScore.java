@@ -79,27 +79,22 @@ public class SecurityScore implements Score {
 	}
 
 	public void setExistenceOfBestPractice(int resourceId, double existenceOfBestPractice) {
-		LOGGER.info("setExistenceOfBestPractice");
 		this.existenceOfBestPractice.put(resourceId, existenceOfBestPractice);
 	}
 
 	public void setExistenceOfCheckAreas(int resourceId, double existenceOfCheckAreas) {
-		LOGGER.info("setExistenceOfCheckAreas");
 		this.existenceOfCheckAreas.put(resourceId, existenceOfCheckAreas);
 	}
 
 	public void setExistenceOfPolicy(int resourceId, double existenceOfPolicy) {
-		LOGGER.info("setExistenceOfPolicy");
 		this.existenceOfPolicy.put(resourceId, existenceOfPolicy);
 	}
 
 	public void setExistenceOfSecurityControl(int resourceId, double existenceOfSecurityControl) {
-		LOGGER.info("setExistenceOfSecurityControl");
 		this.existenceOfSecurityControl.put(resourceId, existenceOfSecurityControl);
 	}
 
 	public void setExistenceOfSecurityDefinition(int resourceId, double existenceOfSecurityDefinition) {
-		LOGGER.info("setExistenceOfSecurityDefinition");
 		this.existenceOfSecurityDefinition.put(resourceId, existenceOfSecurityDefinition);
 	}
 
@@ -270,12 +265,6 @@ public class SecurityScore implements Score {
 	 * the score is calculated.
 	 */
 	private void calculateScore() {
-		LOGGER.info("size of existenceOfBestPractice: " + existenceOfBestPractice.size() + "\n"
-				+ "size of existenceOfSecurityDefinition: " + existenceOfSecurityDefinition.size() + "\n"
-				+ "size of existenceOfCheckAreas: " + existenceOfCheckAreas.size() + "\n" 
-				+ "size of existenceOfPolicy: " +existenceOfPolicy.size()+ "\n" 
-				+ "size of existenceOfSecurityControl: " +existenceOfSecurityControl.size());
-
 		// verifies whether all data required are provided or not
 		if (existenceOfBestPractice.isEmpty() || existenceOfSecurityDefinition.isEmpty()
 				|| existenceOfCheckAreas.isEmpty() || existenceOfPolicy.isEmpty()

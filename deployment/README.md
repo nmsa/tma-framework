@@ -1,8 +1,8 @@
 # TMA-Deployment
 In this directory are presented the following files that deploys some components of TMA framework:
 
- - `tma_deployment.yaml` - This file deploys Monitor, FaultTolerantQueue, and MySQL with Ceph block-storage;
- - `tma_deployment_without_ceph.yaml` - This file deploys  Monitor, FaultTolerantQueue, and MySQL without Ceph storage.
+ - `tma_deployment.yaml` - This file deploys Monitor, FaultTolerantQueue, and MySQL with `Ceph` block-storage;
+ - `tma_deployment_without_ceph.yaml` - This file deploys  Monitor, FaultTolerantQueue, and `MySQL` without `Ceph` storage.
 
 ## Prerequisites
 
@@ -65,7 +65,7 @@ kubeadm join --token TOKEN MASTER_IP:6443
 
 Where TOKEN is the token you were presented after initializing the master and MASTER_IP is the IP address of the master.
 
-Now, the `Kubernetes` cluster are ready to deploy containers.
+Now, the `Kubernetes` cluster is ready to deploy containers.
 
 ## Installation
 
@@ -75,10 +75,10 @@ After completing all steps of the previous section, it is necessary to initializ
 kubectl proxy --address IP_MASTER_MACHINE --port=8089 --accept-hosts '.*' &
 ```
 
-After that, you need to build the base `Docker` image of TMA_Monitor. To do that, you should run the following commnads in Worker node:
+After that, you need to build the base `Docker` image of TMA_Monitor using [`build.sh`](https://github.com/eubr-atmosphere/tma-framework-m/blob/master/development/dependency/python-base/build.sh) script. To do that, you should run the following commnads in Worker node:
 
 ```sh
-cd ../development/dependency/python-base/
+cd tma-framework-m/development/dependency/python-base/
 sh build.sh
 ```
 
@@ -93,14 +93,14 @@ sh setup-environment.sh MASTER_IP
 
 To deploy the `tma_deployment.yaml` file, first, you need to execute the commands presented in this [README](https://github.com/eubr-atmosphere/tma-framework-k/tree/master/development/ceph).
 
-With Ceph correctly configured, you need to execute the following commands in Ceph machine:
+With `Ceph` correctly configured, you need to execute the following commands in `Ceph` machine:
 
 ```sh
 ceph auth get-key client.admin
 echo [Output of the previous command]| base64
 ```
 
-After that you need to replace in line 398 of yaml file the key with the one returned by the previous command. Finally, you need to replace the line 454 of the yaml file with the IP or FQDN of Ceph machine. To deploy TMA platform with Ceph, you just need to execute the following command:
+After that you need to replace in line 398 of yaml file the key with the one returned by the previous command. Finally, you need to replace the line 454 of the yaml file with the IP or FQDN of `Ceph` machine. To deploy TMA platform with `Ceph`, you just need to execute the following command:
 
 ```sh
 kubectl create -f tma_deployment.yaml

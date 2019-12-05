@@ -83,6 +83,14 @@ public class TrustworthinessScore implements Score {
         return this.performanceScore;
     }
 
+    public PrivacyScore getPrivacyScore() {
+        return this.privacyScore;
+    }
+
+    public SecurityScore getSecurityScore() {
+        return this.securityScore;
+    }
+
 	@Override
 	public long getValueTime() {
 		return this.valueTime;
@@ -100,7 +108,7 @@ public class TrustworthinessScore implements Score {
 	public void setResourceId(int resourceId) {
 		this.resourceId = resourceId;
 	}
-	
+
 	@Override
 	public int getMetricId() {
 		return this.metricId;

@@ -9,7 +9,7 @@ public class SecurityScore implements Score {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SecurityScore.class);
 
-	private Double score = -1.0;
+	private Double score;
 	private int resourceId;
 	private long timestamp;
 	private int metricId;
@@ -73,7 +73,7 @@ public class SecurityScore implements Score {
 
 	public Double getScore() {
 		// verifies whether is score has already been calculated or not.
-		if ((this.score == null) || (this.score == -1.0))
+		if (this.score == null)
 			this.calculateScore();
 		return this.score;
 	}

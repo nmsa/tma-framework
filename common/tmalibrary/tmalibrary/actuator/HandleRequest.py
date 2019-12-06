@@ -18,8 +18,8 @@ class HandleRequest:
 		publicKeyExecutor = keymanager.getPublicKey(publicKeyExecutorPath)
 		encryptedMessage = keymanager.encrypt(plainResponse,publicKeyExecutor)
 		response = base64.b64encode(str(encryptedMessage))
-		response = response + str.encode("\n")
-		response = response + signedResponseEncoded
+		response = str(response) + "\n"
+		response = response + str(signedResponseEncoded)
 		return response
 
 	def processRequest(self, request):

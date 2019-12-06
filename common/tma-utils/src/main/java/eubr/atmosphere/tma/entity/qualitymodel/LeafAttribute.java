@@ -1,6 +1,8 @@
 package eubr.atmosphere.tma.entity.qualitymodel;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -84,6 +86,9 @@ public class LeafAttribute extends MetricAttributeView implements Serializable {
 		}
 		
 		MetricDataPK metricDataPK = new MetricDataPK();
+		if (timestamp == null) {
+			timestamp = new Timestamp(Instant.now().toEpochMilli());
+		}
 		metricDataPK.setValueTime(timestamp);
 		metricDataPK.setMetricId(this.getId());
 		metricData.setMetricId(metricDataPK);
@@ -125,6 +130,10 @@ public class LeafAttribute extends MetricAttributeView implements Serializable {
 			}
 		}
 
+		if (average == 0 || amount == 0) {
+			return 0;
+		}
+		
 		if (this.normalizationKind == MetricNormalizationKind.COST) {
 			return 1 - (average / amount);
 		}
@@ -158,6 +167,10 @@ public class LeafAttribute extends MetricAttributeView implements Serializable {
 			}
 		}
 
+		if (minimum == 0) {
+			return 0;
+		}
+		
 		if (this.normalizationKind == MetricNormalizationKind.COST) {
 			return 1 - minimum;
 		}
@@ -191,6 +204,10 @@ public class LeafAttribute extends MetricAttributeView implements Serializable {
 			}
 		}
 
+		if (maximum == 0) {
+			return 0;
+		}
+		
 		if (this.normalizationKind == MetricNormalizationKind.COST) {
 			return 1 - maximum;
 		}
@@ -223,7 +240,10 @@ public class LeafAttribute extends MetricAttributeView implements Serializable {
 			}
 		}
 
-
+		if (sum == 0) {
+			return 0;
+		}
+		
 		if (this.normalizationKind == MetricNormalizationKind.COST) {
 			return 1 - sum;
 		}

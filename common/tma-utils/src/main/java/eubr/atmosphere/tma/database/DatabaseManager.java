@@ -30,7 +30,7 @@ public class DatabaseManager {
             if ((connection == null) || connection.isClosed()) {
             	connection = DriverManager
                         .getConnection("jdbc:mysql://mysql-0.mysql.default.svc.cluster.local:3306/knowledge?"
-                                + "user=root&password=passtobereplaced");
+                                + "user=root&password=passtobereplaced&autoReconnect=true");
             }
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());

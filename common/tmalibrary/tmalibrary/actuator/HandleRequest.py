@@ -2,6 +2,7 @@ from .KeyManager import KeyManager
 import base64
 import json
 from .ActuatorPayload import ActuatorPayload
+import os
 
 class HandleRequest:
 
@@ -18,9 +19,7 @@ class HandleRequest:
 		publicKeyExecutor = keymanager.getPublicKey(publicKeyExecutorPath)
 		encryptedMessage = keymanager.encrypt(plainResponse,publicKeyExecutor)
 		response = base64.b64encode(str(encryptedMessage))
-		response = str(response) + "\n"
-		response = response + str(signedResponseEncoded)
-		return response
+		return os.linesep.join([response, signedResponseEncoded])
 
 	def processRequest(self, request):
 

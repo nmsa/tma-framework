@@ -23,7 +23,7 @@ class KeyManager:
 		public_key = RSA.importKey(public_key_string)
 
 		# encrypt the plain text using the public key
-		encryptedText = public_key.encrypt(text,random.randint(1,101))
+		encryptedText = public_key.encrypt(text.encode('utf-8'), 32)[0]
 		return encryptedText
 
 	def getPrivateKey(self, filenameprivatekey):

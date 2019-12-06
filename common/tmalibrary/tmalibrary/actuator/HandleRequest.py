@@ -17,7 +17,7 @@ class HandleRequest:
 		publicKeyExecutorPath = "keys/pub-key-executor"
 		publicKeyExecutor = keymanager.getPublicKey(publicKeyExecutorPath)
 		encryptedMessage = keymanager.encrypt(plainResponse,publicKeyExecutor)
-		response = base64.b64encode(str(encryptedMessage))
+		response = base64.b64encode(encryptedMessage)
 		response = str(response) + "\n"
 		response = response + str(signedResponseEncoded)
 		return response

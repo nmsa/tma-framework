@@ -48,7 +48,8 @@ class KeyManager:
 	# The method that signs the data using the private key that is stored in keyFile path
 	def sign(self, data,keyFile):
 		privateSignature = RSA.importKey(keyFile)
-		h = SHA.new(data)
+		encData = data.encode('utf-8')
+		h = SHA.new(encData)
 		signer = Crypto.Signature.PKCS1_v1_5.new(privateSignature)
 		signature = signer.sign(h)
 		return signature

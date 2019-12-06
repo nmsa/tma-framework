@@ -29,7 +29,7 @@ class KeyManager:
 	def getPrivateKey(self, filenameprivatekey):
                 # read private key from file
 		try:
-			privKey = open(filenameprivatekey,"r").read()
+			privKey = open(filenameprivatekey, "rb").read()
 			return privKey
 
 		except EnvironmentError as e:
@@ -39,7 +39,7 @@ class KeyManager:
 	def getPublicKey(self, filenamepublickey):
 		# read public key from file
 		try:
-			pubkey = open(filenamepublickey,"r").read()
+			pubkey = open(filenamepublickey, "rb").read()
 			return pubkey
 		except EnvironmentError as e:
 			print(os.strerror(e.errno))

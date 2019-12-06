@@ -10,4 +10,7 @@ class ActuatorPayload(object):
 	 	elif type(value) is dict:
 	 		return ActuatorPayload(value)
 	 	else:
-	 		return value 	
+	 		return value
+
+	 def __getitem__(self, item):
+	 	return self.__dict__[item]

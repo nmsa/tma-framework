@@ -3,6 +3,7 @@ import base64
 import json
 from .ActuatorPayload import ActuatorPayload
 import os
+import tempfile
 
 class HandleRequest:
 
@@ -19,7 +20,12 @@ class HandleRequest:
 		publicKeyExecutor = keymanager.getPublicKey(publicKeyExecutorPath)
 		encryptedMessage = keymanager.encrypt(plainResponse,publicKeyExecutor)
 		response = base64.b64encode(encryptedMessage)
-		return os.linesep.join([response, signedResponseEncoded])
+		fp = tempfile.TemporaryFile()
+		fp.write(response)
+		fp.write(os.linesep)
+		fp.write(signedResponseEncoded)
+		fp.close()
+		return fp
 
 	def processRequest(self, request):
 

@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name='tmalibrary',
-    version='9.6',
+    version='9.7',
     author='Rui Silva',
     author_email='rfsilva@student.dei.uc.pt',
     description='Probe and Actuator Library',

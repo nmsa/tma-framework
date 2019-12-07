@@ -3,7 +3,7 @@ import base64
 import json
 from .ActuatorPayload import ActuatorPayload
 import os
-import tempfile
+from flask import Response
 
 class HandleRequest:
 
@@ -20,12 +20,7 @@ class HandleRequest:
 		publicKeyExecutor = keymanager.getPublicKey(publicKeyExecutorPath)
 		encryptedMessage = keymanager.encrypt(plainResponse,publicKeyExecutor)
 		response = base64.b64encode(encryptedMessage)
-		fp = tempfile.TemporaryFile()
-		fp.write(response)
-		fp.write(os.linesep)
-		fp.write(signedResponseEncoded)
-		fp.close()
-		return fp
+		return Response("{}\n{}{}".format(response, signedResponseEncoded.encode), mimetype='text/plain')
 
 	def processRequest(self, request):
 

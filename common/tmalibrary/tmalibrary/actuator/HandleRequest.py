@@ -20,7 +20,7 @@ class HandleRequest:
 		publicKeyExecutor = keymanager.getPublicKey(publicKeyExecutorPath)
 		encryptedMessage = keymanager.encrypt(plainResponse,publicKeyExecutor)
 		response = base64.b64encode(encryptedMessage)
-		return Response("{}\n{}{}".format(response, signedResponseEncoded), mimetype='text/plain')
+		return Response("{}\n{}".format(response, signedResponseEncoded), mimetype='application/octet-stream')
 
 	def processRequest(self, request):
 

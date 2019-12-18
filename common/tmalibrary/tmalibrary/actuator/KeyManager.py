@@ -23,13 +23,13 @@ class KeyManager:
 		public_key = RSA.importKey(public_key_string)
 
 		# encrypt the plain text using the public key
-		encryptedText = public_key.encrypt(text,random.randint(1,101))
+		encryptedText = public_key.encrypt(text.encode('utf-8'), 32)[0]
 		return encryptedText
 
 	def getPrivateKey(self, filenameprivatekey):
                 # read private key from file
 		try:
-			privKey = open(filenameprivatekey,"r").read()
+			privKey = open(filenameprivatekey, "rb").read()
 			return privKey
 
 		except EnvironmentError as e:
@@ -39,7 +39,7 @@ class KeyManager:
 	def getPublicKey(self, filenamepublickey):
 		# read public key from file
 		try:
-			pubkey = open(filenamepublickey,"r").read()
+			pubkey = open(filenamepublickey, "rb").read()
 			return pubkey
 		except EnvironmentError as e:
 			print(os.strerror(e.errno))
@@ -48,7 +48,8 @@ class KeyManager:
 	# The method that signs the data using the private key that is stored in keyFile path
 	def sign(self, data,keyFile):
 		privateSignature = RSA.importKey(keyFile)
-		h = SHA.new(data)
+		encData = data.encode('utf-8')
+		h = SHA.new(encData)
 		signer = Crypto.Signature.PKCS1_v1_5.new(privateSignature)
 		signature = signer.sign(h)
 		return signature

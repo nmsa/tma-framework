@@ -5,6 +5,8 @@ public class TrustworthinessScore implements Score {
     private Double score;
     private ResourceConsumptionScore resourceConsumptionScore; 
     private PerformanceScore performanceScore;
+    private SecurityScore securityScore;
+    private PrivacyScore privacyScore;
     private Integer podCount;
     private int metricId;
     private int resourceId;
@@ -14,6 +16,26 @@ public class TrustworthinessScore implements Score {
             PerformanceScore performanceScore) {
         this.resourceConsumptionScore = resourceConsumptionPodScore;
         this.performanceScore = performanceScore;
+        this.securityScore = new SecurityScore();
+        this.privacyScore = new PrivacyScore();
+        this.podCount = 0;
+        this.score = 0.0;
+    }
+
+    public TrustworthinessScore(PrivacyScore privacyScore) {
+        this.privacyScore = privacyScore;
+        this.resourceConsumptionScore = new ResourceConsumptionScore();
+        this.performanceScore = new PerformanceScore();
+        this.securityScore = new SecurityScore();
+        this.podCount = 0;
+        this.score = 0.0;
+    }
+
+    public TrustworthinessScore(SecurityScore securityScore) {
+        this.securityScore = securityScore;
+        this.resourceConsumptionScore = new ResourceConsumptionScore();
+        this.performanceScore = new PerformanceScore();
+        this.privacyScore = new PrivacyScore();
         this.podCount = 0;
         this.score = 0.0;
     }
@@ -61,6 +83,14 @@ public class TrustworthinessScore implements Score {
         return this.performanceScore;
     }
 
+    public PrivacyScore getPrivacyScore() {
+        return this.privacyScore;
+    }
+
+    public SecurityScore getSecurityScore() {
+        return this.securityScore;
+    }
+
 	@Override
 	public long getValueTime() {
 		return this.valueTime;
@@ -78,7 +108,7 @@ public class TrustworthinessScore implements Score {
 	public void setResourceId(int resourceId) {
 		this.resourceId = resourceId;
 	}
-	
+
 	@Override
 	public int getMetricId() {
 		return this.metricId;

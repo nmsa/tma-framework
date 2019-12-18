@@ -15,6 +15,13 @@ public class PrivacyScore implements Score {
     private int resourceId;
     private long valueTime;
 
+    public PrivacyScore() {
+        this.configurationProfileId = -1;
+        this.attributeId = -1;
+        this.score = 0.0;
+        this.threshold = 0.0;
+    }
+
     public PrivacyScore(Integer configurationProfileId, Integer attributeId, Double score, Double threshold) {
         super();
         this.score = score;

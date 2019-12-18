@@ -1,6 +1,8 @@
 package eubr.atmosphere.tma.entity.qualitymodel;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -70,6 +72,9 @@ public class CompositeAttributeView extends MetricAttributeView implements Seria
 		}
 
 		MetricDataPK metricDataPK = new MetricDataPK();
+		if (timestamp == null) {
+			timestamp = new Timestamp(Instant.now().toEpochMilli());
+		}
 		metricDataPK.setValueTime(timestamp);
 		metricDataPK.setMetricId(this.getId());
 		metricData.setMetricId(metricDataPK);

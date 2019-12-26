@@ -2,8 +2,6 @@ from .KeyManager import KeyManager
 import base64
 import json
 from .ActuatorPayload import ActuatorPayload
-import os
-from flask import Response
 
 class HandleRequest:
 
@@ -19,8 +17,10 @@ class HandleRequest:
 		publicKeyExecutorPath = "keys/pub-key-executor"
 		publicKeyExecutor = keymanager.getPublicKey(publicKeyExecutorPath)
 		encryptedMessage = keymanager.encrypt(plainResponse,publicKeyExecutor)
-		response = base64.b64encode(encryptedMessage)
-		return Response("{}\n{}".format(response, signedResponseEncoded), mimetype='application/octet-stream')
+		encryptedMessageBase = base64.b64encode(encryptedMessage)
+		response = str(encryptedMessageBase) + '\n' + str(signedResponseEncoded)
+		responseBytes = response.encode()
+		return responseBytes
 
 	def processRequest(self, request):
 

@@ -1,30 +1,32 @@
 from Crypto.PublicKey import RSA
-import Crypto.Cipher.PKCS1_v1_5
+from Crypto.Cipher import PKCS1_v1_5
 import Crypto.Signature.PKCS1_v1_5
 from Crypto.Hash import SHA
+from base64 import b64decode
+from base64 import b64encode
 
-import random
 import os
 import errno
 
 class KeyManager:
 
 	def decrypt(self, text, private_key_string):
+
 		# import private key to an RSA object
 		private_key = RSA.importKey(private_key_string)
+		cipher = PKCS1_v1_5.new(private_key)
 
-		# decrypt the text with the private key
-		cypher = Crypto.Cipher.PKCS1_v1_5.new(private_key)
-		decryptedText = cypher.decrypt(text,15)
-		return decryptedText
+		message = cipher.decrypt(b64decode(text),"Error while decrypting")
+		return message
+
 
 	def encrypt(self, text, public_key_string):
+
 		# import public key to an RSA object
 		public_key = RSA.importKey(public_key_string)
-
-		# encrypt the plain text using the public key
-		encryptedText = public_key.encrypt(text.encode('utf-8'), 32)[0]
-		return encryptedText
+		cipher = PKCS1_v1_5.new(public_key)
+		ciphertext = b64encode(cipher.encrypt(bytes(text,"utf-8")))
+		return ciphertext
 
 	def getPrivateKey(self, filenameprivatekey):
                 # read private key from file

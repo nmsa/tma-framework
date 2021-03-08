@@ -28,4 +28,4 @@ Fields explanation:
 * `target,targetId` -> These fields identify the target of some action in a context. In the context of changing Resource's pod count, target identifies the name of the Resource and targetId the corresponding Id in the Resource Table. 
 
 
-In this folder there is a script for creating the table in the database named `logsTableScript`.
+In the following link https://github.com/nmsa/tma-framework-k/tree/master/database there is a script for creating the table in the database named `logsTableScript.sql`.

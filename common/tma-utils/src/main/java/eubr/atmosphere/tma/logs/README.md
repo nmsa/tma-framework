@@ -11,7 +11,9 @@ Next, we present the table that represent this logs on the database and we descr
 
 Fields explanation:
 
-* `LogTime` -> It is the time the log happens and it's used as primary key.
+* `id` -> It is the primary key, an unique identifier of each log and is automatically incremented.
+
+* `logTime` -> It is the time the log happens.
 
 * `origin` -> It is the subject that dispatches the log. For example, it can be a Plan, Quality Model, etc...
 

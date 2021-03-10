@@ -17,13 +17,15 @@ public class LogManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(LogManager.class);
 
     
-    public int insertLog(String origin, int originId, String description, String previousValue, String newValue, String component, int logGroupId, String target, int targetId) {
+    public static int insertLog(String origin, int originId, String description, String previousValue, String newValue, String component, int logGroupId, String target, int targetId) {
         String sql =
                 "INSERT INTO logs(logTime, origin,originId,description,previousValue,newValue,component,logGroupId,target,targetId) VALUES (FROM_UNIXTIME(?), ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement ps;
 
+        DatabaseManager databaseManager = new DatabaseManager();
+
         try {
-            ps = DatabaseManager.getConnectionInstance().prepareStatement(
+            ps = databaseManager.getConnectionInstance().prepareStatement(
                     sql, Statement.RETURN_GENERATED_KEYS);
             
             ps.setLong(1, Instant.now().getEpochSecond());
@@ -58,7 +60,6 @@ public class LogManager {
             else
                 ps.setInt(10,targetId);
             
-            DatabaseManager databaseManager = new DatabaseManager();
             return databaseManager.execute(ps);
         
         } catch (SQLException e) {

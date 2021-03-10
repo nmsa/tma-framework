@@ -7,7 +7,7 @@ For saving the data on the database, this class invokes another class, DatabaseM
 
 Next, we present the table that represent this logs on the database and we describe each parameter of it.
 
-![Log table used to save logs on database](https://github.com/nmsa/tma-framework/blob/master/common/tma-utils/src/main/java/eubr/atmosphere/tma/logs/LogsTable.png)
+![Log table used to save logs on database](LogsTable.png)
 
 Fields explanation:
 

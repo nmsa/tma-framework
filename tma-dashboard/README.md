@@ -34,7 +34,7 @@ Now, to interact with the tool you should access the URL: `http://IP_WORKER:3100
 
 ## API communication setup
 
-The IP address and port of [TMA's API](https://github.com/nmsa/tma-framework-k/tree/master/development/tma-admin-api), where requests from this tool will be sent to, are configured in [Configurations.js](tma-dashboard/src/configurations/Configurations.js) file, under the following directory:
+The IP address and port of [TMA's API](https://github.com/nmsa/tma-framework-k/tree/master/development/tma-admin-api), where requests from this tool will be sent to, are configured in [Configurations.js](src/configurations/Configurations.js) file, under the following directory:
 
 ```
 ...\tma-dashboard\src\configurations\
@@ -53,7 +53,7 @@ The webpage uses libraries to provide some of its main features:
  -  `Reaflow`, with few customization, to generate the tree structure of quality models
  -  `jsPDF` to generate a pdf file with a chart image
  
-To communicate with TMA's API, the `axios` library is used and a module ([ApiModule.js](tma-dashboard/src/utils/api/ApiModule.js)) contains all the communication methods. Also, the client-side input validation resides in [ValidInputs.js](tma-dashboard/src/utils/ValidInputs.js) file.
+To communicate with TMA's API, the `axios` library is used and a module ([ApiModule.js](src/utils/api/ApiModule.js)) contains all the communication methods. Also, the client-side input validation resides in [ValidInputs.js](src/utils/ValidInputs.js) file.
 
 ## Authors
 * João Ribeiro

@@ -34,7 +34,7 @@ Now, to interact with the tool you should access the URL: `http://IP_WORKER:3100
 
 ## API communication setup
 
-The IP address and port of TMA's API (URL_API_TMA), where requests from this tool will be sent to, are configured in [Configurations.js](tma-dashboard/src/configurations/Configurations.js) file, under the following directory:
+The IP address and port of [TMA's API](https://github.com/nmsa/tma-framework-k/tree/master/development/tma-admin-api), where requests from this tool will be sent to, are configured in [Configurations.js](tma-dashboard/src/configurations/Configurations.js) file, under the following directory:
 
 ```
 ...\tma-dashboard\src\configurations\
@@ -46,7 +46,7 @@ With the default deploy of TMA's API, the IP address and port of this configurat
 
 This webpage was created in the form of a SPA (Single Page Application) using React, and Semantic UI for styling. 
 
-Its functioning is based on performing requests to TMA's API (URL_API_TMA) whenever it needs data. Additionally, requests related to adaptation rules are redirected to and from TMA's Planning API (URL_PLANNING). Whenever requests sent from the webpage involve timestamps, they are converted to UTC before arriving at the API.
+Its functioning is based on performing requests to [TMA's API](https://github.com/nmsa/tma-framework-k/tree/master/development/tma-admin-api) whenever it needs data. Additionally, requests related to adaptation rules are redirected to and from [TMA's Planning](https://github.com/nmsa/tma-framework-p) API. Whenever requests sent from the webpage involve timestamps, they are converted to UTC before arriving at the API.
 
 The webpage uses libraries to provide some of its main features:
  -  `Chart.js` to create charts

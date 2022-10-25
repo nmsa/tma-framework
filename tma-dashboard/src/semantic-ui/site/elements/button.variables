@@ -1,0 +1,23 @@
+/*******************************
+    User Variable Overrides
+*******************************/
+@import "../globals/site.variables";
+
+//grey button layout
+
+@greyHover: @tmaBackgroundColor;
+@greyFocus: @tmaBackgroundColor;
+@greyDown:  @tmaBackgroundColor;
+@greyActive: @tmaBackgroundColor;
+@greyBackground: @tmaBackgroundColor;
+
+@greyTextColor: @tmaHoverColor;
+
+//blue button layout
+@blueHover: @blue;
+@blueFocus: @blue;
+@blueDown:  @blue;
+@blueActive: @blue;
+@blueBackground: @blue;
+
+@blueTextColor: @white;

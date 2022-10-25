@@ -1,0 +1,31 @@
+/*******************************
+         Site Overrides
+*******************************/
+@import "../globals/site.variables";
+
+@media only screen and (max-width : @largestMobileScreen) {
+
+    .ui.table:not(.unstackable) {
+        border-bottom: 0px;
+    }
+    .ui.table:not(.unstackable) thead {
+        display: table-header-group;
+    }
+    .ui.table:not(.unstackable) tr {
+        padding-top: 0;
+        padding-bottom: 0;
+        box-shadow: unset !important;
+        border-bottom: 2px solid @black;
+    }
+    .ui.table:not(.unstackable) tr > th{
+        background: @tmaColor;
+        box-shadow: unset !important;
+    }
+    .ui.table:not(.unstackable) tr > td {
+        background: none;
+        box-shadow: unset !important;
+    }
+    .ui.table tfoot tr:first-child > th:only-child{
+        background: #F9FAFB;
+    }
+}

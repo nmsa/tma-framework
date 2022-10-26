@@ -26,8 +26,9 @@ public class Plan {
     private Integer planId;
     private int metricId;
     private long valueTime;
-    private STATUS status; // TODO: define the possible status in a enum
+    private STATUS status;
     private List<ActionPlan> actionList;
+    private int resourceId;
 
     public Plan() {
         super();
@@ -70,7 +71,15 @@ public class Plan {
         return actionList;
     }
 
-	public void addAction(ActionPlan action) {
-		this.actionList.add(action);
-	}
+    public void addAction(ActionPlan action) {
+        this.actionList.add(action);
+    }
+    
+    public int getResourceId() {
+        return resourceId;
+    }
+
+    public void setResourceId(int resourceId) {
+        this.resourceId = resourceId;
+    }
 }

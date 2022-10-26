@@ -1,0 +1,23 @@
+/*******************************
+     User Global Variables
+*******************************/
+
+//============== DEFINE BACKGROUND COLOR ==============================================//
+@pageBackground: #FFFFFF;
+
+//============== DEFINE TMA COLORS ==============================================//
+@tmaColor: #007bff;
+@tmaHoverColor: #0057b3;
+@tmaBackgroundColor: #a7abae;
+
+
+//============= REDEFINE COLORS ACCORDINGLY =======================================//
+@grey: @tmaBackgroundColor;
+@blue: #123c58;
+
+//============== DEFINE SOME GENERAL ELEMENTS  COLORS ACCORDING TO TMA COLORS ==============================================//
+@textColor: @black;
+
+@labelColor: @tmaColor;
+
+@blueHeaderColor: @blue;

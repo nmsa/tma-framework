@@ -1,0 +1,10 @@
+/*******************************
+    User Variable Overrides
+*******************************/
+@import "../globals/site.variables";
+
+@inputBorder: 1px solid @tmaBackgroundColor;
+@inputFocusBorderColor: @blue;
+
+@inputPlaceholderColor: lighten(@inputColor, 65);
+@inputPlaceholderFocusColor: lighten(@inputColor, 35);

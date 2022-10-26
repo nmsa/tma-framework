@@ -1,0 +1,23 @@
+/*******************************
+    User Variable Overrides
+*******************************/
+@import "../globals/site.variables";
+
+@headerColor: @white;
+@headerBackground: @tmaColor;
+@headerBorder: 2px solid @black;
+
+@cellBorder: 2px solid @black;
+@footerBorder: 2px solid @black;
+
+
+//hide row outline
+@rowBorder: 0px;
+
+@border: 2px solid @black;
+@borderRadius: 0px;
+
+@borderCollapse: collapse;
+
+@selectableBackground: @tmaBackgroundColor;
+@selectableTextColor: @black;

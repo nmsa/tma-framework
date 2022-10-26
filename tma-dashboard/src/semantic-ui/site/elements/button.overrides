@@ -1,0 +1,12 @@
+/*******************************
+         Site Overrides
+*******************************/
+@import "../globals/site.variables";
+
+.ui.grey.button {
+    color: @tmaColor;
+}
+
+.ui.blue.button {
+    background-color: lighten(@blue, 10);
+}

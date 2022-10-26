@@ -1,0 +1,6 @@
+/*******************************
+    User Variable Overrides
+*******************************/
+@import "../globals/site.variables";
+
+@border: 2px solid @black;

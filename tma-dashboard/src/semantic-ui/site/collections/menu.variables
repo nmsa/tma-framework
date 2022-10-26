@@ -1,0 +1,18 @@
+/*******************************
+    User Variable Overrides
+*******************************/
+@import "../globals/site.variables";
+
+@secondaryPointingBorderWidth: 10px;
+
+@secondaryPointingHoverTextColor: @tmaHoverColor;
+
+@secondaryPointingActiveTextColor: @tmaHoverColor;
+
+@secondaryPointingActiveHoverTextColor: @tmaHoverColor;
+
+@secondaryPointingActiveBorderColor: @tmaHoverColor;
+
+@secondaryPointingBorderColor: @tmaColor;
+
+@iconMenuItemColor: @tmaColor;
